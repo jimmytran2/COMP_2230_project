@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Template</title>
+</head>
+<body>
+    <div id="tracker-container">
+        <header>
+            <h1>Community Support Tracker</h1>
+            <hr>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="#donation-tracker">Donation Tracker</a></li>
+                <li><a href="#volunteer-hours">Volunteer Hours</a></li>
+                <li><a href="#travel-tips">Event Signup</a></li>
+            </ul>
+        </nav>
+        
+        <form id="event-signup">
+            <label for="event-name">Event Name: </label>
+            <input type="text" name="event-name" id="event-name">
+
+            <label for="representative-name">Company Representative's Name: </label>
+            <input type="text" name="representative-name" id="representative-name">
+
+            <label for="representative-email">Representative's Email:</label>
+            <input type="email" name="representative-email" id="representative-email">
+
+            <label for="role-selection">Role Selection:</label>
+            <select name="role-selection" id="role-selection">
+                <option value="">Select a role</option>
+                <option value="sponser">Sponser</option>
+                <option value="Participant">Participant</option>
+                <option value="Organizer">Organizer</option>
+            </select>
+        </form>
+
+        <footer>
+            <hr>
+            <span>Bhea Madeleine Jimmy</span>
+            <span>&copy 2024</span>
+            <span><a href="https://github.com/jimmytran2/Community-Support-Tracker">GitHub</a></span>
+        </footer>
+    </div>
+    <script src="event-signup.js"></script>
+</body>
+</html>

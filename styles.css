@@ -3,6 +3,12 @@ body{
     font-family: Arial, Helvetica, sans-serif;
 }
 
+form{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
 #tracker-container {
     background-color: white;
     border-radius: 1rem;
@@ -62,3 +68,8 @@ td, th {
 tr:nth-child(even) {
 background-color: #dddddd;
 }
+
+input, select, fieldset {
+    border: 1px solid lightgray;
+    padding: 0.3rem;
+  }
