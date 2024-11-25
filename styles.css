@@ -1,0 +1,64 @@
+body{
+    background-color: rgb(232, 229, 229);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#tracker-container {
+    background-color: white;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5rem 2rem 5rem 2rem;
+    padding: 2rem;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+
+li {
+    padding: 1rem;
+}
+
+button {
+    color: white;
+    border: 0rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+}
+
+#submit-button{
+    background-color:  rgb(40, 89, 224);
+}
+
+#submit-button:hover{
+    background-color: rgb(100, 100, 199)
+}
+
+#delete-button{
+    background-color: #ff0000;
+}
+
+#delete-button:hover{
+    background-color: #e50000;
+}
+
+table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+tr:nth-child(even) {
+background-color: #dddddd;
+}
