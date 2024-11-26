@@ -1,16 +1,18 @@
 const formNode = document.querySelector("#donation-tracker");
 
 const charityNameNode = document.querySelector("#charity-name-section")
-const charityName = document.querySelector("#charity-name");
+const charityNameInput = document.querySelector("#charity-name");
 
 const donationAmountNode = document.querySelector("#donation-amt-section");
-const donationAmount = document.querySelector("#donation-amt");
+const donationAmountInput = document.querySelector("#donation-amt");
 
 const donationDateNode = document.querySelector("#donation-date-section");
-const donationDate = document.querySelector("#donation-date");
+const donationDateInput = document.querySelector("#donation-date");
 
 const donorCommentNode = document.querySelector("#donor-comment-section");
-const donorComment = document.querySelector("#donor-comment");
+const donorCommentInput = document.querySelector("#donor-comment");
+
+const data = {};
 
 // EVENT LISTENER: FORM SUBMIT
 formNode.addEventListener("submit", (event) =>{
@@ -20,29 +22,44 @@ formNode.addEventListener("submit", (event) =>{
     validateDonation();
     validateDate();
     validateComments();
+    console.log(data);
 })
 
 function validateCharityName(){
-    if(escapeHTML(charityName.value) === ""){
+    const charityName = escapeHTML(charityNameInput.value);
+
+    if(charityName === ""){
         showError(charityNameNode, "Charity Name cannot be blank.");
+    } else {
+        data.name = charityName;
     }
 }
 
 function validateDonation(){
-    if(escapeHTML(donationAmount.value) === ""){
+    const donationAmount = escapeHTML(donationAmountInput.value);
+
+    if(donationAmount === ""){
         showError(donationAmountNode, "Donation cannot be blank.");
+    } else {
+        data.donation = donationAmount;
     }
 }
 
 function validateDate(){
-    if(donationDate.value === ""){
+    const donationDate = donationDateInput.value;
+    if(donationDate === ""){
         showError(donationDateNode, "A date must be selected.");
+    } else {
+        data.date = donationDate;
     }
 }
 
 function validateComments(){
-    if(escapeHTML(donorComment.value) === ""){
+    const donorComment = escapeHTML(donorCommentInput.value);
+    if(donorComment === ""){
         showError(donorCommentNode, "Please enter a comment.");
+    } else {
+        data.comment = donorComment;
     }
 }
 
