@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "jest": "^29.7.0",
     "jest-junit": "^16.0.0",
