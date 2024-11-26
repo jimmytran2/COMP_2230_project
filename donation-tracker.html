@@ -20,18 +20,30 @@
             </ul>
         </nav>
         <form id="donation-tracker">
+
             <!-- CHARITY NAME -->
-            <label for="charity-name">Charity Name:</label>
-            <input type="text" id="charity-name" name="charity-name">
+            <section id="charity-name-section">
+                <label for="charity-name">Charity Name:</label>
+                <input type="text" id="charity-name" name="charity-name">
+            </section>
+
             <!-- DONATION AMOUNT -->
-            <label for="donation-amt">Donation Amount:</label>
-            <input type="number" name="donation-amt" id="donation-amt" placeholder="1.00" step="0.01" min="1">
+            <section id="donation-amt-section">
+                <label for="donation-amt">Donation Amount:</label>
+                <input type="number" name="donation-amt" id="donation-amt" placeholder="1.00" step="0.01" min="1">
+            </section>
+
             <!-- DATE OF DONATION -->
-            <label for="donation-date">Date of Donation:</label>
-            <input type="date" id="donation-date" name="donation-date">
+            <section id="donation-date-section">
+                <label for="donation-date">Date of Donation:</label>
+                <input type="date" id="donation-date" name="donation-date">
+            </section>
+
             <!-- DONOR COMMENT/MESSAGE -->
-            <label for="donor-comment">Donor Comment/Message:</label>
-            <textarea id="donor-comment" name="donor-comment"></textarea>
+            <section id="donor-comment-section">
+                <label for="donor-comment">Donor Comment/Message:</label>
+                <textarea id="donor-comment" name="donor-comment"></textarea>
+            </section>
 
             <!-- SUBMIT BUTTON -->
             <button type="submit" id="submit-button">Submit</button>
