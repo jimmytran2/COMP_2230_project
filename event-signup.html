@@ -19,24 +19,40 @@
                 <li><a href="#travel-tips">Event Signup</a></li>
             </ul>
         </nav>
-        
+
         <form id="event-signup">
-            <label for="event-name">Event Name: </label>
-            <input type="text" name="event-name" id="event-name">
 
-            <label for="representative-name">Company Representative's Name: </label>
-            <input type="text" name="representative-name" id="representative-name">
+            <!-- EVENT NAME -->
+            <section id="event-name-section">
+                <label for="event-name">Event Name: </label>
+                <input type="text" name="event-name" id="event-name">
+            </section>
 
-            <label for="representative-email">Representative's Email:</label>
-            <input type="email" name="representative-email" id="representative-email">
+            <!-- COMPANY REPRESENTATIVE'S NAME -->
+            <section id="representative-name-section">
+                <label for="representative-name">Representative's Name: </label>
+                <input type="text" name="representative-name" id="representative-name">
+            </section>
 
-            <label for="role-selection">Role Selection:</label>
-            <select name="role-selection" id="role-selection">
-                <option value="">Select a role</option>
-                <option value="sponser">Sponser</option>
-                <option value="Participant">Participant</option>
-                <option value="Organizer">Organizer</option>
-            </select>
+            <!-- REPRESENTATIVES EMAIL -->
+            <section id="representative-email-section">
+                <label for="representative-email">Representative's Email:</label>
+                <input type="email" name="representative-email" id="representative-email">
+            </section>
+
+            <!-- ROLE SELLECTION -->
+            <section id="role-selection-section">
+                <label for="role-selection">Role Selection:</label>
+                <select name="role-selection" id="role-selection">
+                    <option value="">Select a role:</option>
+                    <option value="Sponser">Sponser</option>
+                    <option value="Participant">Participant</option>
+                    <option value="Organizer">Organizer</option>
+                </select>
+            </section>
+
+            <!-- SUBMIT BUTTON -->
+            <button type="submit" id="submit-button">Submit</button>
         </form>
 
         <footer>
