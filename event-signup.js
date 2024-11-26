@@ -1,69 +1,108 @@
-const formNode = document.querySelector("#event-signup");
+if(typeof window === "undefined") {
+    // window object represents the browser window
+    module.exports = {  attachEventListener,
+                        formDataObject,
+                        validateForm, 
+                        validateEventName,  
+                        validateRepresentativeName, 
+                        validateRepresentativeEmail, 
+                        validateRoleSelection };
+} else {
+    // if undefined, window object is not available
+    window.onload = init;
+}
 
-const eventNameSection = document.querySelector("#event-name-section");
-const eventNameInputNode = document.querySelector("#event-name");
+function init(){
+    // Select html element
+    const formNode = document.querySelector("#event-signup");
+    
+    // Invokes function to attach event listener to form and function to form
+    attachEventListener(formNode, validateForm);
+}
 
-const representativeNameSection = document.querySelector("#representative-name-section");
-const representativeNameInputNode = document.querySelector("#representative-name");
+/**
+ * Attaches event listener to html form and callback function
+ * @param {element} formNode 
+ */
+function attachEventListener(formNode, callback) {
+    formNode.addEventListener("submit", (event) => {
+        event.preventDefault();
+        callback();
+    })
+}
 
-const representativeEmailSection = document.querySelector("#representative-email-section");
-const representativeEmailInputNode = document.querySelector("#representative-email");
+let formData = {};
 
-const roleSelectionSection = document.querySelector("#role-selection-section");
-const roleSelectionNode = document.querySelector("#role-selection");
+function validateForm(){
 
-let validForm = true;
-
-formNode.addEventListener("submit", (event) => {
-
-    validForm = true;
-
-    event.preventDefault();
     clearErrorMessages();
-    validateEventName();
-    validateRepresentativeName();
-    validateRepresentativeEmail();
-    validateRoleSelection();
 
-    if(validForm){
-        formData = {
-            eventName: escapeHTML(eventNameInputNode.value),
-            representativeName: escapeHTML(representativeNameInputNode.value),
-            representativeEmail: escapeHTML(representativeEmailInputNode.value),
-            roleSelection: roleSelectionNode.value
-        };
-        console.log(formData);
+    const eventNameSection = document.querySelector("#event-name-section");
+    const eventNameInputNode = document.querySelector("#event-name");
+    const isValidEventName = validateEventName(eventNameInputNode.value, eventNameSection);
 
-        // code that puts values into a table "Stage Two"
+
+    const representativeNameSection = document.querySelector("#representative-name-section");
+    const representativeNameInputNode = document.querySelector("#representative-name");
+    const isValidRepName = validateRepresentativeName(representativeNameInputNode.value, representativeNameSection);
+
+
+    const representativeEmailSection = document.querySelector("#representative-email-section");
+    const representativeEmailInputNode = document.querySelector("#representative-email");
+    const isValidRepEmail = validateRepresentativeEmail(representativeEmailInputNode.value, representativeEmailSection);
+
+    const roleSelectionSection = document.querySelector("#role-selection-section");
+    const roleSelectionNode = document.querySelector("#role-selection");
+    const isValidRole = validateRoleSelection(roleSelectionNode.value, roleSelectionSection);
+
+    if(isValidEventName && isValidRepName && isValidRepEmail && isValidRole){
+        formDataObject(eventNameInputNode.value, representativeNameInputNode.value, representativeEmailInputNode.value, roleSelectionNode.value);
     }
+}
 
-})
+
+function formDataObject(event, name, email, role){
+    let formData = {event: event,
+                    name: name,
+                    email: email,
+                    role: role
+    }
+    return formData;
+    console.log(formData);
+}
 
 
-function validateEventName(){
-    const eventName = escapeHTML(eventNameInputNode.value);
+function validateEventName(eventName, section){
+    let event = escapeHTML(eventName);
 
-    if(eventName === ""){
+    // Check if input was empty
+    if(event === ""){
         let error = "Please enter an event name"
-        displayErrorMessage(eventNameSection, error);
-        validForm = false;
+        displayErrorMessage(section, error);
+        return false;
+    }else{
+        formData.event = eventName;
+        return true;
     }
 }
 
-function validateRepresentativeName(){
-    const representativeName = escapeHTML(representativeNameInputNode.value);
 
-    if(representativeName === ""){
+function validateRepresentativeName(representativeName, section){
+    let representative = escapeHTML(representativeName);
+
+    if(representative === ""){
         let error = "Please enter a name"
-        displayErrorMessage(representativeNameSection, error);
-        validForm = false;
+        displayErrorMessage(section, error);
+        return false;
+    }else{
+        formData.representative = representativeName;
+        return true;
     }
 }
 
 
-function validateRepresentativeEmail(){
-    // Retrieves value inputted into email input
-    const email = escapeHTML(representativeEmailInputNode.value);
+function validateRepresentativeEmail(representativeEmail, section){
+    let email = escapeHTML(representativeEmail);
 
     // Regex pattern for email
     const pattern = /^[A-Z0-9._%+-]+@[A-Z0-9._]+\.[A-Z]{2,4}$/i;
@@ -71,25 +110,32 @@ function validateRepresentativeEmail(){
     // checks if email address inputted is empty
     if(email === ""){
         let error = "Please enter an email address";
-        displayErrorMessage(representativeEmailSection, error);
-        validForm = false;
-
+        displayErrorMessage(section, error);
+        return false
     // tests email input against email regex pattern
     }else if(!(pattern.test(email))){
         let error = "Please enter a valid email address";
-        displayErrorMessage(representativeEmailSection, error);
-        validForm = false;
+        displayErrorMessage(section, error);
+        return false;
+    }else{
+        formData.email = representativeEmail;
+        return true;
     }
 }
 
-function validateRoleSelection(){
-    if(roleSelectionNode.value === ""){
+
+function validateRoleSelection(roleSelection, section){
+
+    // check if value was selected from dropdown
+    if(roleSelection === ""){
         let error = "Please select a role"
-        displayErrorMessage(roleSelectionSection, error)
-        validForm = false;
+        displayErrorMessage(section, error)
+        return false;
+    }else{
+        formData.role = roleSelection;
+        return true;
     }
 }
-
 
 
 /**
@@ -113,6 +159,7 @@ function displayErrorMessage(element, error){
     element.appendChild(errorMessageNode);
 }
 
+
 /**
  * Clears error messages upon entering valid entry and pressing submit
  */
@@ -126,6 +173,7 @@ function clearErrorMessages(){
     }
 }
 
+
 /**
  * Translates special characters to corresponding HTML entities
  * @param {string} input - text inputs
@@ -138,4 +186,3 @@ function escapeHTML(input){
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
 }
-
