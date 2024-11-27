@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Template</title>
+</head>
+<body>
+    <div id="tracker-container">
+        <header>
+            <h1>Community Support Tracker</h1>
+            <hr>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="#donation-tracker">Donation Tracker</a></li>
+                <li><a href="#volunteer-hours">Volunteer Hours</a></li>
+                <li><a href="#travel-tips">Event Signup</a></li>
+            </ul>
+        </nav>
+        <form id="volunteer-tracker">
+            
+            <!-- CHARITY NAME -->
+            <section id="charity-name-section">
+                <label for="charity-name">Charity Name:</label>
+                <input type="text" name="charity-name" id="charity-name">
+            </section>
+
+            <!-- HOURS VOLUNTEERED -->
+            <section id="hours-volunteered-section">
+                <label for="hours-volunteered">Hours Volunteered:</label>
+                <input type="number" name="hours-volunteered" id="hours-volunteered">
+            </section>
+
+            <!-- DATE -->
+            <section id="date-section">
+                <label for="hours-volunteered">Hours Volunteered:</label>
+                <input type="date" name="date" id="date">
+            </section>
+
+            <!-- VOLUNTEER EXPERIENCE RATING -->
+             <section>
+                <label for="experience-rating">Volunteer Experience Rating:</label>
+                <select id="experience-rating" name="experience-rating">
+                    <option value="" disabled selected>Select a rating</option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="5">5 Stars</option>
+                </select>
+             </section>
+
+             <div>
+                <button type="submit" id="submit-button">Submit</button>
+             </div>
+        </form>
+
+        <footer>
+            <hr>
+            <span>Bhea Madeleine Jimmy</span>
+            <span>&copy 2024</span>
+            <span><a href="https://github.com/jimmytran2/Community-Support-Tracker">GitHub</a></span>
+        </footer>
+    </div>
+    <script src="volunteer-tracker.js"></script>
+</body>
+</html>

@@ -69,7 +69,16 @@ tr:nth-child(even) {
 background-color: #dddddd;
 }
 
-input, select, fieldset {
+
+inputs, select, fieldsets{
     border: 1px solid lightgray;
     padding: 0.3rem;
   }
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 10px; 
+}
+
