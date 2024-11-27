@@ -1,11 +1,14 @@
 if (typeof window === "undefined") {
     // if there is no window, export modules
-    module.exports = { attachEventListener, 
+    module.exports = { 
+        attachEventListener, 
         createDataObject, 
         validateCharityName,
         validateHoursVolunteered,
         validateDate,
-        validateExperienceRating };
+        validateExperienceRating,
+        validateFormSubmit 
+    };
 } else {
     // run init function when window loads
     window.onload = init;
@@ -41,6 +44,8 @@ function validateFormSubmit() {
     // clear errors
     clearErrors();
 
+    let data = {};
+
     // Validate inputs
     const charityNameNode = document.querySelector("#charity-name-section");
     const charityNameInput = escapeHTML(document.querySelector("#charity-name").value);
@@ -63,8 +68,11 @@ function validateFormSubmit() {
 
     // If all validations passed
     if (isValid) {
-        createDataObject(charityNameInput, Number(hoursVolunteeredInput), dateInput, Number(experienceRatingInput));
+       data = createDataObject(charityNameInput, Number(hoursVolunteeredInput), dateInput, Number(experienceRatingInput));
     }
+
+    // return data object
+    return data;
 }
 
 

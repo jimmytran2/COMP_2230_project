@@ -1,5 +1,57 @@
-const { attachEventListener, createDataObject, validateCharityName, validateHoursVolunteered, validateDate, validateExperienceRating } = require("../volunteer-tracker.js");
+const { attachEventListener, createDataObject, validateCharityName, validateHoursVolunteered, validateDate, validateExperienceRating, validateFormSubmit } = require("../volunteer-tracker.js");
 const { JSDOM } = require("jsdom");
+
+test("validateFormSubmit correctly collects form data", () => {
+    // Setup DOM
+    const dom = new JSDOM(`
+      <!DOCTYPE html>
+      <form id="volunteer-tracker">
+        <!-- CHARITY NAME -->
+        <section id="charity-name-section">
+          <label for="charity-name">Charity Name:</label>
+          <input type="text" id="charity-name" name="charity-name" value="test charity">
+        </section>
+  
+        <!-- HOURS VOLUNTEERED -->
+        <section id="hours-volunteered-section">
+          <label for="hours-volunteered">Hours Volunteered:</label>
+          <input type="number" name="hours-volunteered" id="hours-volunteered" value="2">
+        </section>
+  
+        <!-- DATE -->
+        <section id="date-section">
+          <label for="date">Date:</label>
+          <input type="date" id="date" name="date" value="2020-12-30">
+        </section>
+  
+        <!-- VOLUNTEER EXPERIENCE RATING -->
+        <section>
+          <label for="experience-rating">Volunteer Experience Rating:</label>
+          <select id="experience-rating" name="experience-rating">
+            <option value="3">3 Stars</option>
+          </select>
+        </section>
+  
+        <!-- SUBMIT BUTTON -->
+        <div>
+          <button type="submit" id="submit-button">Submit</button>
+        </div>
+      </form>
+    `);
+  
+    global.document = dom.window.document;
+  
+    let result = validateFormSubmit();
+    let expected = ({
+      name: "test charity",
+      hours: 2,
+      date: "2020-12-30",
+      rating: 3
+
+    });
+  
+    expect(result).toStrictEqual(expected);
+  });
 
 test("callback is triggered on form submission", () => {
     // fake function; only returns true
