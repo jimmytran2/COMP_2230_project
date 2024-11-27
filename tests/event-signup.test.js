@@ -1,5 +1,6 @@
 const { 
     attachEventListener,
+    validateForm,
     formDataObject,
     validateEventName,
     validateRepresentativeName,
@@ -28,22 +29,52 @@ test("validate form function is triggered when form is submitted", () => {
 });
 
 
-test("formData object is created on valid form submission", () => {
-    let event = "FunRun2024";
-    let name = "Matt Damon";
-    let email = "matt@gmail.com";
-    let role = "Sponsor";
 
-    let result = formDataObject(event, name, email, role);
+test("validateForm function correctly collects data on form submit", () => {
+    const dom = new JSDOM(`<!DOCTYPE html>
+                            <form id="event-signup">
+                                <section id="event-name-section">
+                                    <label for="event-name">Event Name: </label>
+                                    <input type="text" name="event-name" id="event-name" value="FunRun2024">
+                                </section>
 
+                                <section id="representative-name-section">
+                                    <label for="representative-name">Representative's Name: </label>
+                                    <input type="text" name="representative-name" id="representative-name" value="Jimmy">
+                                </section>
+
+                                <section id="representative-email-section">
+                                    <label for="representative-email">Representative's Email:</label>
+                                    <input type="email" name="representative-email" id="representative-email" value="jimmy@gmail.com">
+                                </section>
+
+                                <section id="role-selection-section">
+                                    <label for="role-selection">Role Selection:</label>
+                                    <select name="role-selection" id="role-selection">
+                                        <option value="">Select a role:</option>
+                                        <option value="Sponsor" selected>Sponsor</option>
+                                        <option value="Participant">Participant</option>
+                                        <option value="Organizer">Organizer</option>
+                                    </select>
+                                </section>
+
+                                <div>
+                                    <button type="submit" id="submit-button">Submit</button>
+                                </div>
+                            </form>`)
+    global.document = dom.window.document;
+
+    let result = validateForm();
     let expected = ({event: "FunRun2024",
-                     name: "Matt Damon",
-                     email: "matt@gmail.com",
-                     role: "Sponsor"
-                    })
+        name: "Jimmy",
+        email: "jimmy@gmail.com",
+        role: "Sponsor"
+       })
 
-    expect(result).toEqual(expected);
-});
+    expect(result).toStrictEqual(expected)
+})
+
+
 
 
 test("function flags if event name is left empty", () => {
@@ -153,3 +184,20 @@ test("function correctly identifies and flags when email is not in valid form", 
     expect(result).toBe(false);
 
 })
+
+test("formData object is created on valid form submission", () => {
+    let event = "FunRun2024";
+    let name = "Matt Damon";
+    let email = "matt@gmail.com";
+    let role = "Sponsor";
+
+    let result = formDataObject(event, name, email, role);
+
+    let expected = ({event: "FunRun2024",
+                     name: "Matt Damon",
+                     email: "matt@gmail.com",
+                     role: "Sponsor"
+                    })
+
+    expect(result).toEqual(expected);
+});
