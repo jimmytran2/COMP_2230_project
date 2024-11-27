@@ -1,8 +1,8 @@
 # COMP 2230 Project
 
 ## Authors
-Student 1:
-Student 2:
+Student 1: Bhea Del Rosario
+Student 2: Madeleine Doerksen
 Student 3:
 
 ## Components
