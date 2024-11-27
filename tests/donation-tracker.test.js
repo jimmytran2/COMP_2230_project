@@ -1,4 +1,4 @@
-const { attachEventListener, createDataObject, validateCharityName, validateDonation, validateDate} = require("../donation-tracker.js");
+const { attachEventListener, createDataObject, validateCharityName, validateDonation, validateDate, validateFormSubmit} = require("../donation-tracker.js");
 
 const { JSDOM } = require("jsdom");
 
@@ -24,22 +24,54 @@ test("callback is triggered on form submission", () => {
     expect(mockCallback).toHaveBeenCalled();
 });
 
-test("temporary data object is correctly populated with form data", () =>{
-    let name = "charity";
-    let donation = "2.00";
-    let date = "2020-11-11";
-    let comment = "hello";
+test("validateFormSubmit correctly collects form data", () =>{
+    // setup dom
+    const dom = new JSDOM(`
+                <!DOCTYPE html>
+                <!-- CHARITY NAME -->
+                <section id="charity-name-section">
+                    <label for="charity-name">Charity Name:</label>
+                    <input type="text" id="charity-name" name="charity-name" value="test charity">
+                </section>
+    
+                <!-- DONATION AMOUNT -->
+                <section id="donation-amt-section">
+                    <label for="donation-amt">Donation Amount:</label>
+                    <input type="number" name="donation-amt" id="donation-amt" placeholder="$1.00 minimum" step="0.01" min="1" value="2.00">
+                </section>
+    
+                <!-- DATE OF DONATION -->
+                <section id="donation-date-section">
+                    <label for="donation-date">Date of Donation:</label>
+                    <input type="date" id="donation-date" name="donation-date" value="2020-12-30">
+                </section>
+    
+                <!-- DONOR COMMENT/MESSAGE -->
+                <section id="donor-comment-section">
+                    <label for="donor-comment">Donor Comment/Message (required):</label>
+                    <textarea id="donor-comment" name="donor-comment" >test value</textarea>
+                </section>
+    
+                <!-- SUBMIT BUTTON -->
+                <div>
+                    <button type="submit" id="submit-button">Submit</button>
+                </div>
+                </form>`)
 
-    let result = createDataObject(name, donation, date, comment);
-    let expected = {
-        name: "charity",
+    global.document = dom.window.document;
+    let result = validateFormSubmit();
+    let expected = ({
+        name: "test charity",
         donation: "2.00",
-        date: "2020-11-11",
-        comment: "hello"
-    }
+        date: "2020-12-30",
+        comment: "test value"
+    })
 
-    expect(result).toEqual(expected);
+    expect(result).toStrictEqual(expected);
+
+
 });
+
 
 test("validateCharityName returns false when input is empty", () =>{
     let name = "";
@@ -110,4 +142,21 @@ test("validateDonation returns false when input is non-numeric", () =>{
     let result = validateDonation(donation, donationNode);
 
     expect(result).toBe(false);
+});
+
+test("temporary data object is correctly populated with form data", () =>{
+    let name = "charity";
+    let donation = "2.00";
+    let date = "2020-11-11";
+    let comment = "hello";
+
+    let result = createDataObject(name, donation, date, comment);
+    let expected = {
+        name: "charity",
+        donation: "2.00",
+        date: "2020-11-11",
+        comment: "hello"
+    }
+
+    expect(result).toEqual(expected);
 });
