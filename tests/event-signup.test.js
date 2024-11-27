@@ -1,7 +1,6 @@
 const { 
     attachEventListener,
     formDataObject,
-    validateForm,
     validateEventName,
     validateRepresentativeName,
     validateRepresentativeEmail,
