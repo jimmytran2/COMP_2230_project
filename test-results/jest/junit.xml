@@ -1,37 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="25" failures="0" errors="0" time="4.639">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-11-27T19:17:58" time="3.699" tests="7">
-    <testcase classname=" callback is triggered on form submission" name=" callback is triggered on form submission" time="0.178">
-    </testcase>
-    <testcase classname=" temporary data object is correctly populated with form data" name=" temporary data object is correctly populated with form data" time="0.023">
-    </testcase>
-    <testcase classname=" validateCharityName returns false when input is empty" name=" validateCharityName returns false when input is empty" time="0.038">
-    </testcase>
-    <testcase classname=" validateDonation returns false when input is empty" name=" validateDonation returns false when input is empty" time="0.018">
-    </testcase>
-    <testcase classname=" validateDate returns false when input is empty" name=" validateDate returns false when input is empty" time="0.034">
-    </testcase>
-    <testcase classname=" validateDonation returns false when input is negative" name=" validateDonation returns false when input is negative" time="0.019">
-    </testcase>
-    <testcase classname=" validateDonation returns false when input is non-numeric" name=" validateDonation returns false when input is non-numeric" time="0.024">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-11-27T19:17:58" time="3.745" tests="7">
-    <testcase classname=" validate form function is triggered when form is submitted" name=" validate form function is triggered when form is submitted" time="0.17">
-    </testcase>
-    <testcase classname=" formData object is created on valid form submission" name=" formData object is created on valid form submission" time="0.032">
-    </testcase>
-    <testcase classname=" function flags if event name is left empty" name=" function flags if event name is left empty" time="0.043">
-    </testcase>
-    <testcase classname=" function flags if representative&apos;s name is left empty" name=" function flags if representative&apos;s name is left empty" time="0.018">
-    </testcase>
-    <testcase classname=" function flags if representative&apos;s email is left empty" name=" function flags if representative&apos;s email is left empty" time="0.039">
-    </testcase>
-    <testcase classname=" function flags if role selection is left empty" name=" function flags if role selection is left empty" time="0.032">
-    </testcase>
-    <testcase classname=" function correctly identifies and flags when email is not in valid form" name=" function correctly identifies and flags when email is not in valid form" time="0.047">
-    </testcase>
-  </testsuite>
   <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-11-27T19:17:58" time="3.887" tests="11">
     <testcase classname=" validateFormSubmit correctly collects form data" name=" validateFormSubmit correctly collects form data" time="0.222">
     </testcase>
@@ -54,6 +21,30 @@
     <testcase classname=" validateExperienceRating returns false when input is out of range" name=" validateExperienceRating returns false when input is out of range" time="0.047">
     </testcase>
     <testcase classname=" validateExperienceRating returns true when input is valid" name=" validateExperienceRating returns true when input is valid" time="0.017">
+<testsuites name="jest tests" tests="25" failures="0" errors="0" time="1.199">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-11-27T19:01:22" time="0.682" tests="8">
+    <testcase classname=" validate form function is triggered when form is submitted" name=" validate form function is triggered when form is submitted" time="0.044">
+    </testcase>
+    <testcase classname=" validateForm function correctly collects data on form submit" name=" validateForm function correctly collects data on form submit" time="0.023">
+    </testcase>
+    <testcase classname=" function flags if event name is left empty" name=" function flags if event name is left empty" time="0.006">
+<testsuites name="jest tests" tests="25" failures="0" errors="0" time="1.278">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-11-27T18:49:08" time="0.768" tests="8">
+    <testcase classname=" callback is triggered on form submission" name=" callback is triggered on form submission" time="0.036">
+    </testcase>
+    <testcase classname=" validateFormSubmit correctly collects form data" name=" validateFormSubmit correctly collects form data" time="0.017">
+    </testcase>
+    <testcase classname=" validateCharityName returns false when input is empty" name=" validateCharityName returns false when input is empty" time="0.005">
+    </testcase>
+    <testcase classname=" validateDonation returns false when input is empty" name=" validateDonation returns false when input is empty" time="0.004">
+    </testcase>
+    <testcase classname=" validateDate returns false when input is empty" name=" validateDate returns false when input is empty" time="0.004">
+    </testcase>
+    <testcase classname=" validateDonation returns false when input is negative" name=" validateDonation returns false when input is negative" time="0.004">
+    </testcase>
+    <testcase classname=" validateDonation returns false when input is non-numeric" name=" validateDonation returns false when input is non-numeric" time="0.003">
+    </testcase>
+    <testcase classname=" temporary data object is correctly populated with form data" name=" temporary data object is correctly populated with form data" time="0">
     </testcase>
   </testsuite>
 </testsuites>

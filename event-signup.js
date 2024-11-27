@@ -2,6 +2,7 @@ if(typeof window === "undefined") {
     // window object represents the browser window
     // if window is undefined, export
     module.exports = {  attachEventListener,
+                        validateForm,
                         formDataObject,
                         validateEventName,  
                         validateRepresentativeName, 
@@ -64,10 +65,14 @@ function validateForm(){
     const roleSelectionNode = document.querySelector("#role-selection");
     const isValidRole = validateRoleSelection(roleSelectionNode.value, roleSelectionSection);
 
+    let data = {};
+
     // if all 4 inputs are valid, invoke function to create data object
     if(isValidEventName && isValidRepName && isValidRepEmail && isValidRole){
-        formDataObject(eventNameInputNode.value, representativeNameInputNode.value, representativeEmailInputNode.value, roleSelectionNode.value);
+        data = formDataObject(eventNameInputNode.value, representativeNameInputNode.value, representativeEmailInputNode.value, roleSelectionNode.value);
     }
+
+    return data;
 }
 
 /**
