@@ -68,3 +68,8 @@ td, th {
 tr:nth-child(even) {
 background-color: #dddddd;
 }
+
+input, select, fieldset {
+    border: 1px solid lightgray;
+    padding: 0.3rem;
+  }

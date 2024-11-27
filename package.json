@@ -10,12 +10,7 @@
   "jest": {
     "reporters": [
       "default",
-      [
-        "jest-junit",
-        {
-          "outputDirectory": "test-results/jest"
-        }
-      ]
+      ["jest-junit", { "outputDirectory": "test-results/jest" }]
     ]
   }
 }
