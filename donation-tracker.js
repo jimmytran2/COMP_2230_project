@@ -1,53 +1,57 @@
-
-
-const data = {};
-
 if(typeof window === "undefined") {
-    // window object represents the browser window
+    // if there is no window, export modules
     module.exports = { attachEventListener, 
         createDataObject, 
         validateCharityName,
         validateDonation,
         validateDate};
 } else {
-    // if undefined, window object is not available
-    // typically result of working in a Node environment
+    // run init fuction when window loads
     window.onload = init;
 }
 
+/**
+ * Initializes event listener for form
+ */
 function init(){
     const formNode = document.querySelector("#donation-tracker");
     attachEventListener(formNode, validateFormSubmit);
 }
 
+/**
+ * Adds eventlistener and attaches callback function to node
+ * @param {*} node -  Node to attach event listener to
+ * @param {*} callback - Function to be called when event happens
+ */
 function attachEventListener(node, callback){
-    
     node.addEventListener("submit", event => {
         event.preventDefault();
         callback();
     })
 }
 
+/**
+ * Validate form inputs and creates temporary data object if all tests pass
+ */
 function validateFormSubmit(){
-    // reset validity and clear errors
-
+    // clear errors
     clearErrors();
 
     // Validate inputs
     const charityNameNode = document.querySelector("#charity-name-section");
-    const charityNameInput = document.querySelector("#charity-name").value;
+    const charityNameInput = escapeHTML(document.querySelector("#charity-name").value);
     const isCharityNameValid = validateCharityName(charityNameInput, charityNameNode);
 
     const donationAmountNode = document.querySelector("#donation-amt-section");
-    const donationAmountInput = document.querySelector("#donation-amt").value;
+    const donationAmountInput = escapeHTML(document.querySelector("#donation-amt").value);
     const isDonationValid = validateDonation(donationAmountInput, donationAmountNode);
 
     const donationDateNode = document.querySelector("#donation-date-section");
-    const donationDateInput = document.querySelector("#donation-date").value;
+    const donationDateInput = escapeHTML(document.querySelector("#donation-date").value);
     const isDateValid = validateDate(donationDateInput, donationDateNode);
 
     // const donorCommentNode = document.querySelector("#donor-comment-section");
-    const donorCommentInput = document.querySelector("#donor-comment").value;
+    const donorCommentInput = escapeHTML(document.querySelector("#donor-comment").value);
     // const isCommentsValid = validateComments(donorCommentInput, donorCommentNode);
 
     // Check if all validations passsed, doesn't check for comments
@@ -60,6 +64,14 @@ function validateFormSubmit(){
 
 }
 
+/**
+ * Returns an object that is created using arguments
+ * @param {str} charityName - Name of charity
+ * @param {str} donationAmt - Donation amount
+ * @param {str} donationDate - Date of donation
+ * @param {str} donorComment - Donor comments
+ * @returns - object containing data
+ */
 function createDataObject(charityName, donationAmt, donationDate, donorComment){
     const data = {
         name: charityName,
@@ -72,6 +84,12 @@ function createDataObject(charityName, donationAmt, donationDate, donorComment){
     return data;
 }
 
+/**
+ * Validate charity name input, creates error if it was blank.
+ * @param {str} charityName - Value of charity name input
+ * @param {*} node - Container of charity name input
+ * @returns - false if there was an error, otherwise returns true
+ */
 function validateCharityName(charityName, node){
     // Check charityName if blank
     if(charityName.length <= 0){
@@ -83,19 +101,27 @@ function validateCharityName(charityName, node){
 
 }
 
+/**
+ * Validate donation input, creates errors if input is blank, less than 1.00, or non-numeric
+ * @param {str} donationAmount - Value of donation amount input
+ * @param {*} node - Container of donation input
+ * @returns - false if there was an error, otherwise returns true
+ */
 function validateDonation(donationAmount, node){
-    // Floating point numbers
+    // Floating point numbers pattern
     const numericPattern = /^-?\d+(\.\d+)?$/;
-    // check if donation is blank, less than $1.00, or non numeric.
-    // Break out of function if any errors
+
+    // Check if donation is blank
     if(donationAmount.length <= 0){
         showError(node, "Donation cannot be blank.");
         return false;
     }
+    // Check if donation is less than $1.00
     if(parseFloat(donationAmount) < 1.00){
         showError(node, "Donation must be at least $1.00");
         return false;
     }
+    // Check if donation is numeric
     if(!numericPattern.test(donationAmount)){
         showError(node, "Donation amount must be numeric.");
         return false;
@@ -105,7 +131,14 @@ function validateDonation(donationAmount, node){
     
 }
 
+/**
+ * Validates date input, creates error if it was blank.
+ * @param {str} donationDate - Value of donation date input
+ * @param {*} node - Container of donation date input
+ * @returns - false if there was an error, otherwise returns true
+ */
 function validateDate(donationDate, node){
+    // Check if blank
     if(donationDate.length <= 0){
         showError(node, "A date must be selected.");
         return false;
@@ -124,6 +157,11 @@ function validateDate(donationDate, node){
 //     }
 // }
 
+/**
+ * Creates an error message for inputElement and appends under the input
+ * @param {*} inputElement - Container error message will be appended to
+ * @param {*} message - Error message
+ */
 function showError(inputElement, message){
     // Create new element
     const errorMessage = document.createElement("div");
@@ -135,6 +173,9 @@ function showError(inputElement, message){
     
 }
 
+/**
+ * Clears all error messages that have .error-message class
+ */
 function clearErrors(){
     // Select error messages
     const errorMessages = document.querySelectorAll(".error-message");
