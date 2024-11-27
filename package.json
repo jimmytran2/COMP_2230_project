@@ -1,7 +1,19 @@
 {
   "dependencies": {
-    "jest": "^29.7.0",
     "jest-junit": "^16.0.0",
     "jsdom": "^25.0.1"
-  }
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "name": "community-support-tracker",
+  "version": "1.0.0",
+  "description": "Student 1:\r Student 2:\r Student 3:",
+  "main": "volunteer-tracker.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
