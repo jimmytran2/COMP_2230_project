@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="7" failures="0" errors="0" time="0.751">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-11-27T01:44:16" time="0.7" tests="7">
+    <testcase classname=" validate form function is triggered when form is submitted" name=" validate form function is triggered when form is submitted" time="0.035">
+    </testcase>
+    <testcase classname=" formData object is created on valid form submission" name=" formData object is created on valid form submission" time="0.013">
+    </testcase>
+    <testcase classname=" function flags if event name is left empty" name=" function flags if event name is left empty" time="0.009">
+    </testcase>
+    <testcase classname=" function flags if representative&apos;s name is left empty" name=" function flags if representative&apos;s name is left empty" time="0.006">
+    </testcase>
+    <testcase classname=" function flags if representative&apos;s email is left empty" name=" function flags if representative&apos;s email is left empty" time="0.005">
+    </testcase>
+    <testcase classname=" function flags if role selection is left empty" name=" function flags if role selection is left empty" time="0.008">
+    </testcase>
+    <testcase classname=" function correctly identifies and flags when email is not in valid form" name=" function correctly identifies and flags when email is not in valid form" time="0.006">
+    </testcase>
+  </testsuite>
+</testsuites>
