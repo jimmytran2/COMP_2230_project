@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Template</title>
+</head>
+<body>
+    <div id="tracker-container">
+        <header>
+            <h1>Community Support Tracker</h1>
+            <hr>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="#donation-tracker">Donation Tracker</a></li>
+                <li><a href="#volunteer-hours">Volunteer Hours</a></li>
+                <li><a href="#travel-tips">Event Signup</a></li>
+            </ul>
+        </nav>
+        <main>
+            <form id="donation-tracker">
+    
+                <!-- CHARITY NAME -->
+                <section id="charity-name-section">
+                    <label for="charity-name">Charity Name:</label>
+                    <input type="text" id="charity-name" name="charity-name">
+                </section>
+    
+                <!-- DONATION AMOUNT -->
+                <section id="donation-amt-section">
+                    <label for="donation-amt">Donation Amount:</label>
+                    <input type="number" name="donation-amt" id="donation-amt" placeholder="$1.00 minimum" step="0.01" min="1" value="">
+                </section>
+    
+                <!-- DATE OF DONATION -->
+                <section id="donation-date-section">
+                    <label for="donation-date">Date of Donation:</label>
+                    <input type="date" id="donation-date" name="donation-date">
+                </section>
+    
+                <!-- DONOR COMMENT/MESSAGE -->
+                <section id="donor-comment-section">
+                    <label for="donor-comment">Donor Comment/Message (required):</label>
+                    <textarea id="donor-comment" name="donor-comment"></textarea>
+                </section>
+    
+                <!-- SUBMIT BUTTON -->
+                <button type="submit" id="submit-button">Submit</button>
+            </form>
+        </main>
+        <footer>
+            <hr>
+            <span>Bhea Madeleine Jimmy</span>
+            <span>&copy 2024</span>
+            <span><a href="https://github.com/jimmytran2/Community-Support-Tracker">GitHub</a></span>
+        </footer>
+    </div>
+    <script src="donation-tracker.js" type="module"></script>
+</body>
+</html>
