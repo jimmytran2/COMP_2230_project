@@ -4,7 +4,8 @@ if(typeof window === "undefined") {
         createDataObject, 
         validateCharityName,
         validateDonation,
-        validateDate};
+        validateDate,
+        validateFormSubmit};
 } else {
     // run init fuction when window loads
     window.onload = init;
@@ -37,6 +38,8 @@ function validateFormSubmit(){
     // clear errors
     clearErrors();
 
+    // instantiate data to empty object
+    let data = {};
     // Validate inputs
     const charityNameNode = document.querySelector("#charity-name-section");
     const charityNameInput = escapeHTML(document.querySelector("#charity-name").value);
@@ -59,8 +62,10 @@ function validateFormSubmit(){
 
     // If all validations passed
     if(isValid){
-        createDataObject(charityNameInput, donationAmountInput, donationDateInput, donorCommentInput);
+        data = createDataObject(charityNameInput, donationAmountInput, donationDateInput, donorCommentInput);
     }
+
+    return data;
 
 }
 
