@@ -125,7 +125,7 @@ test("validateExperienceRating returns false when input is empty", () => {
 });
 
 test("validateExperienceRating returns false when input is out of range", () => {
-    let rating = "6"; // out of range
+    let rating = "6"; // out of range, can only be between 1 and 5
     // setup dom
     const dom = new JSDOM(`<!DOCTYPE html><form id="volunteer-tracker"><select id="experience-rating" name="experience-rating"><option value="6">6 Stars</option></select></form>`);
     global.document = dom.window.document;

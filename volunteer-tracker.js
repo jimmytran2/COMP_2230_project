@@ -118,7 +118,6 @@ function validateHoursVolunteered(hoursVolunteered, node) {
     return true;
 }
 
-
 /**
  * Validates date input, creates error if it was blank.
  * @param {str} date - Value of date input
@@ -160,7 +159,7 @@ function validateExperienceRating(experienceRating, node) {
 /**
  * Creates an error message for inputElement and appends under the input
  * @param {HTMLElement} inputElement - Container error message will be appended to
- * @param {str} message - Error message
+ * @param {str} message - Error message to be displayed
  */
 function showError(inputElement, message) {
     const errorMessage = document.createElement("div");
