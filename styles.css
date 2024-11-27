@@ -69,6 +69,7 @@ tr:nth-child(even) {
 background-color: #dddddd;
 }
 
+
 inputs, select, fieldsets{
     border: 1px solid lightgray;
     padding: 0.3rem;
@@ -80,3 +81,4 @@ inputs, select, fieldsets{
     margin-top: 5px;
     margin-bottom: 10px; 
 }
+

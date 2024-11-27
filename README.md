@@ -3,7 +3,8 @@
 ## Authors
 Student 1: Bhea Del Rosario
 Student 2: Madeleine Doerksen
-Student 3:
+Student 3: Jimmy Tran
+
 
 ## Components
 - Donation Tracker
