@@ -20,8 +20,8 @@ function init(){
 
 /**
  * Adds eventlistener and attaches callback function to node
- * @param {*} node -  Node to attach event listener to
- * @param {*} callback - Function to be called when event happens
+ * @param {HTMLElement} node -  Node to attach event listener to
+ * @param {Function} callback - Function to be called when event happens
  */
 function attachEventListener(node, callback){
     node.addEventListener("submit", event => {
@@ -87,7 +87,7 @@ function createDataObject(charityName, donationAmt, donationDate, donorComment){
 /**
  * Validate charity name input, creates error if it was blank.
  * @param {str} charityName - Value of charity name input
- * @param {*} node - Container of charity name input
+ * @param {HTMLElement} node - Container of charity name input
  * @returns - false if there was an error, otherwise returns true
  */
 function validateCharityName(charityName, node){
@@ -104,7 +104,7 @@ function validateCharityName(charityName, node){
 /**
  * Validate donation input, creates errors if input is blank, less than 1.00, or non-numeric
  * @param {str} donationAmount - Value of donation amount input
- * @param {*} node - Container of donation input
+ * @param {HTMLElement} node - Container of donation input
  * @returns - false if there was an error, otherwise returns true
  */
 function validateDonation(donationAmount, node){
@@ -134,7 +134,7 @@ function validateDonation(donationAmount, node){
 /**
  * Validates date input, creates error if it was blank.
  * @param {str} donationDate - Value of donation date input
- * @param {*} node - Container of donation date input
+ * @param {HTMLElement} node - Container of donation date input
  * @returns - false if there was an error, otherwise returns true
  */
 function validateDate(donationDate, node){
@@ -159,8 +159,8 @@ function validateDate(donationDate, node){
 
 /**
  * Creates an error message for inputElement and appends under the input
- * @param {*} inputElement - Container error message will be appended to
- * @param {*} message - Error message
+ * @param {HTMLElement} inputElement - Container error message will be appended to
+ * @param {str} message - Error message
  */
 function showError(inputElement, message){
     // Create new element
@@ -188,7 +188,7 @@ function clearErrors(){
 
 /**
  * Converts special characters to their corresponding HTML entities.
- * @param {*} input - Input to be converted
+ * @param {str} input - Input to be converted
  * @returns - HTML entities after being converted
  */
 function escapeHTML(input) {
