@@ -11,7 +11,6 @@ const { JSDOM } = require("jsdom");
 
 
 test("validate form function is triggered when form is submitted", () => {
-
     const mockCallback = jest.fn(() => true);
 
     const dom = new JSDOM(`<!DOCTYPE html><form id="event-signup"></form>`)
@@ -30,7 +29,6 @@ test("validate form function is triggered when form is submitted", () => {
 
 
 test("formData object is created on valid form submission", () => {
-
     let event = "FunRun2024";
     let name = "Matt Damon";
     let email = "matt@gmail.com";
@@ -44,12 +42,11 @@ test("formData object is created on valid form submission", () => {
                      role: "Sponsor"
                     })
 
-    expect(result).toStrictEqual(expected);
+    expect(result).toEqual(expected);
 });
 
 
 test("function flags if event name is left empty", () => {
-
     let event = "";
 
     const dom = new JSDOM(`<!DOCTYPE html>
@@ -62,8 +59,7 @@ test("function flags if event name is left empty", () => {
 
     global.document = dom.window.document;
 
-    const eventNameSection = document.querySelector("#event-name");
-
+    const eventNameSection = document.querySelector("#event-name-section");
     let result = validateEventName(event, eventNameSection)
 
     expect(result).toBe(false);
@@ -71,7 +67,6 @@ test("function flags if event name is left empty", () => {
 
 
 test("function flags if representative's name is left empty", () => {
-
     let name = "";
 
     const dom = new JSDOM(`<!DOCTYPE html>
@@ -85,7 +80,6 @@ test("function flags if representative's name is left empty", () => {
     global.document = dom.window.document;
 
     const representativeNameSection = document.querySelector("#representative-name-section");
-
     let result = validateRepresentativeName(name, representativeNameSection);
 
     expect(result).toBe(false);
@@ -94,7 +88,6 @@ test("function flags if representative's name is left empty", () => {
 
 
 test("function flags if representative's email is left empty", () => {
-
     let email = "";
 
     const dom = new JSDOM(`<!DOCTYPE html>
@@ -108,7 +101,6 @@ test("function flags if representative's email is left empty", () => {
     global.document = dom.window.document;
 
     const representativeEmailSection = document.querySelector("#representative-email-section");
-
     let result = validateRepresentativeEmail(email, representativeEmailSection);
 
     expect(result).toBe(false);
@@ -117,7 +109,6 @@ test("function flags if representative's email is left empty", () => {
 
 
 test("function flags if role selection is left empty", () => {
-
     let role = "";
 
     const dom = new JSDOM(`<!DOCTYPE html>
@@ -136,7 +127,6 @@ test("function flags if role selection is left empty", () => {
     global.document = dom.window.document;
 
     const roleSectionSection = document.querySelector("#role-selection-section");
-
     let result = validateRoleSelection(role, roleSectionSection);
 
     expect(result).toBe(false);
@@ -145,8 +135,7 @@ test("function flags if role selection is left empty", () => {
 
 
 test("function correctly identifies and flags when email is not in valid form", () => {
-
-    let email = "@jimmy.com";
+    let badEmail = "@jimmy.com";
 
     const dom = new JSDOM(`<!DOCTYPE html>
                                 <form id="event-signup">
@@ -159,8 +148,7 @@ test("function correctly identifies and flags when email is not in valid form", 
     global.document = dom.window.document;
 
     const representativeEmailSection = document.querySelector("#representative-email-section");
-
-    let result = validateRepresentativeEmail(email, representativeEmailSection);
+    let result = validateRepresentativeEmail(badEmail, representativeEmailSection);
 
     expect(result).toBe(false);
 

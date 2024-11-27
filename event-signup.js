@@ -85,7 +85,7 @@ function formDataObject(event, name, email, role){
                     name: name,
                     email: email,
                     role: role
-    }
+    };
     console.log(formData);
     return formData;
 }
@@ -104,7 +104,7 @@ function validateEventName(eventName, section){
 
     // Check if input was empty
     if(event === ""){
-        let error = "Please enter an event name"
+        let error = "Please enter an event name";
         displayErrorMessage(section, error);
         return false;
     }else{
@@ -125,7 +125,7 @@ function validateRepresentativeName(representativeName, section){
 
     // checks if input is empty
     if(representative === ""){
-        let error = "Please enter a name"
+        let error = "Please enter a name";
         displayErrorMessage(section, error);
         return false;
     }else{
@@ -176,8 +176,8 @@ function validateRoleSelection(roleSelection, section){
 
     // check if value was selected from dropdown
     if(roleSelection === ""){
-        let error = "Please select a role"
-        displayErrorMessage(section, error)
+        let error = "Please select a role";
+        displayErrorMessage(section, error);
         return false;
     }else{
         return true;
