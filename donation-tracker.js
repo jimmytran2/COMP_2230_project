@@ -17,6 +17,8 @@ if(typeof window === "undefined") {
 function init(){
     const formNode = document.querySelector("#donation-tracker");
     attachEventListener(formNode, validateFormSubmit);
+    // Load data
+    displayData();
 }
 
 /**
@@ -63,6 +65,8 @@ function validateFormSubmit(){
     // If all validations passed
     if(isValid){
         data = createDataObject(charityNameInput, donationAmountInput, donationDateInput, donorCommentInput);
+        saveData(data);
+        displayData();
     }
 
     return data;
@@ -85,7 +89,6 @@ function createDataObject(charityName, donationAmt, donationDate, donorComment){
         comment: donorComment
     }
     
-    console.log(data);
     return data;
 }
 
@@ -152,16 +155,6 @@ function validateDate(donationDate, node){
     }
 }
 
-// function validateComments(donorComment, node){
-    
-//     if(donorComment.length <= 0){
-//         showError(node, "Please enter a comment.");
-//         return false;
-//     } else{
-//         return true;
-//     }
-// }
-
 /**
  * Creates an error message for inputElement and appends under the input
  * @param {HTMLElement} inputElement - Container error message will be appended to
@@ -204,4 +197,51 @@ function escapeHTML(input) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+function saveData(data){
+    // retrieve all donations from localStorage
+    let userDonations = JSON.parse(localStorage.getItem("allDonations"));
+    // if there are no "allDonations" initialize as empty array
+    if(!userDonations){
+        userDonations = [];
+    }
+
+    // append data to userDonations
+    userDonations.push(data);
+
+    // save to localStorage
+    localStorage.setItem("allDonations", JSON.stringify(userDonations));
+}
+
+function displayData(){
+    // Select table body
+    const donationsTable = document.querySelector("#donations-table").getElementsByTagName("tbody")[0];
+
+    // Clear table
+    donationsTable.textContent = "";
+
+    // Retrieve donations from localStorage as array
+    let retrievedDonations = JSON.parse(localStorage.getItem("allDonations"));
+
+    // If there are any donations, loop through retrieved donations and add to table
+    if (retrievedDonations){
+        for (let i = 0; i < retrievedDonations.length; i++){
+            // Create empty row at the end of the table
+            const tableRow  = donationsTable.insertRow(-1);
+
+            // Create cells
+            const nameCell = tableRow.insertCell(0);
+            const donationCell = tableRow.insertCell(1);
+            const dateCell = tableRow.insertCell(2);
+            const commentCell = tableRow.insertCell(3);
+
+            // Add data to cells
+            nameCell.textContent = retrievedDonations[i].name;
+            donationCell.textContent = retrievedDonations[i].donation;
+            dateCell.textContent = retrievedDonations[i].date;
+            commentCell.textContent = retrievedDonations[i].comment;
+
+        }
+    }
 }
