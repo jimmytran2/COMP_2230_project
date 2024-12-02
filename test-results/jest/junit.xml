@@ -1,50 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-11-27T19:17:58" time="3.887" tests="11">
-    <testcase classname=" validateFormSubmit correctly collects form data" name=" validateFormSubmit correctly collects form data" time="0.222">
+<testsuites name="jest tests" tests="27" failures="0" errors="0" time="1.384">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-11-27T19:25:48" time="0.714" tests="8">
+    <testcase classname=" validate form function is triggered when form is submitted" name=" validate form function is triggered when form is submitted" time="0.039">
     </testcase>
-    <testcase classname=" callback is triggered on form submission" name=" callback is triggered on form submission" time="0.024">
+    <testcase classname=" validateForm function correctly collects data on form submit" name=" validateForm function correctly collects data on form submit" time="0.022">
     </testcase>
-    <testcase classname=" temporary data object is correctly populated with form data" name=" temporary data object is correctly populated with form data" time="0.002">
+    <testcase classname=" function flags if event name is left empty" name=" function flags if event name is left empty" time="0.005">
     </testcase>
-    <testcase classname=" validateCharityName returns false when input is empty" name=" validateCharityName returns false when input is empty" time="0.032">
+    <testcase classname=" function flags if representative&apos;s name is left empty" name=" function flags if representative&apos;s name is left empty" time="0.005">
     </testcase>
-    <testcase classname=" validateHoursVolunteered returns false when input is empty" name=" validateHoursVolunteered returns false when input is empty" time="0.014">
+    <testcase classname=" function flags if representative&apos;s email is left empty" name=" function flags if representative&apos;s email is left empty" time="0.005">
     </testcase>
-    <testcase classname=" validateDate returns false when input is empty" name=" validateDate returns false when input is empty" time="0.02">
+    <testcase classname=" function flags if role selection is left empty" name=" function flags if role selection is left empty" time="0.01">
     </testcase>
-    <testcase classname=" validateHoursVolunteered returns false when input is negative" name=" validateHoursVolunteered returns false when input is negative" time="0.036">
+    <testcase classname=" function correctly identifies and flags when email is not in valid form" name=" function correctly identifies and flags when email is not in valid form" time="0.008">
     </testcase>
-    <testcase classname=" validateHoursVolunteered returns false when input is non-numeric" name=" validateHoursVolunteered returns false when input is non-numeric" time="0.029">
+    <testcase classname=" formData object is created on valid form submission" name=" formData object is created on valid form submission" time="0.001">
     </testcase>
-    <testcase classname=" validateExperienceRating returns false when input is empty" name=" validateExperienceRating returns false when input is empty" time="0.061">
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-11-27T19:25:49" time="0.349" tests="11">
+    <testcase classname=" validateFormSubmit correctly collects form data" name=" validateFormSubmit correctly collects form data" time="0.018">
     </testcase>
-    <testcase classname=" validateExperienceRating returns false when input is out of range" name=" validateExperienceRating returns false when input is out of range" time="0.047">
+    <testcase classname=" callback is triggered on form submission" name=" callback is triggered on form submission" time="0.004">
     </testcase>
-    <testcase classname=" validateExperienceRating returns true when input is valid" name=" validateExperienceRating returns true when input is valid" time="0.017">
-<testsuites name="jest tests" tests="25" failures="0" errors="0" time="1.199">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-11-27T19:01:22" time="0.682" tests="8">
-    <testcase classname=" validate form function is triggered when form is submitted" name=" validate form function is triggered when form is submitted" time="0.044">
+    <testcase classname=" temporary data object is correctly populated with form data" name=" temporary data object is correctly populated with form data" time="0">
     </testcase>
-    <testcase classname=" validateForm function correctly collects data on form submit" name=" validateForm function correctly collects data on form submit" time="0.023">
+    <testcase classname=" validateCharityName returns false when input is empty" name=" validateCharityName returns false when input is empty" time="0.004">
     </testcase>
-    <testcase classname=" function flags if event name is left empty" name=" function flags if event name is left empty" time="0.006">
-<testsuites name="jest tests" tests="25" failures="0" errors="0" time="1.278">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-11-27T18:49:08" time="0.768" tests="8">
-    <testcase classname=" callback is triggered on form submission" name=" callback is triggered on form submission" time="0.036">
+    <testcase classname=" validateHoursVolunteered returns false when input is empty" name=" validateHoursVolunteered returns false when input is empty" time="0.004">
     </testcase>
-    <testcase classname=" validateFormSubmit correctly collects form data" name=" validateFormSubmit correctly collects form data" time="0.017">
+    <testcase classname=" validateDate returns false when input is empty" name=" validateDate returns false when input is empty" time="0.003">
     </testcase>
-    <testcase classname=" validateCharityName returns false when input is empty" name=" validateCharityName returns false when input is empty" time="0.005">
+    <testcase classname=" validateHoursVolunteered returns false when input is negative" name=" validateHoursVolunteered returns false when input is negative" time="0.004">
     </testcase>
-    <testcase classname=" validateDonation returns false when input is empty" name=" validateDonation returns false when input is empty" time="0.004">
+    <testcase classname=" validateHoursVolunteered returns false when input is non-numeric" name=" validateHoursVolunteered returns false when input is non-numeric" time="0.003">
+    </testcase>
+    <testcase classname=" validateExperienceRating returns false when input is empty" name=" validateExperienceRating returns false when input is empty" time="0.003">
+    </testcase>
+    <testcase classname=" validateExperienceRating returns false when input is out of range" name=" validateExperienceRating returns false when input is out of range" time="0.008">
+    </testcase>
+    <testcase classname=" validateExperienceRating returns true when input is valid" name=" validateExperienceRating returns true when input is valid" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-11-27T19:25:49" time="0.239" tests="8">
+    <testcase classname=" callback is triggered on form submission" name=" callback is triggered on form submission" time="0.007">
+    </testcase>
+    <testcase classname=" validateFormSubmit correctly collects form data" name=" validateFormSubmit correctly collects form data" time="0.008">
+    </testcase>
+    <testcase classname=" validateCharityName returns false when input is empty" name=" validateCharityName returns false when input is empty" time="0.003">
+    </testcase>
+    <testcase classname=" validateDonation returns false when input is empty" name=" validateDonation returns false when input is empty" time="0.003">
     </testcase>
     <testcase classname=" validateDate returns false when input is empty" name=" validateDate returns false when input is empty" time="0.004">
     </testcase>
-    <testcase classname=" validateDonation returns false when input is negative" name=" validateDonation returns false when input is negative" time="0.004">
+    <testcase classname=" validateDonation returns false when input is negative" name=" validateDonation returns false when input is negative" time="0.009">
     </testcase>
     <testcase classname=" validateDonation returns false when input is non-numeric" name=" validateDonation returns false when input is non-numeric" time="0.003">
     </testcase>
-    <testcase classname=" temporary data object is correctly populated with form data" name=" temporary data object is correctly populated with form data" time="0">
+    <testcase classname=" temporary data object is correctly populated with form data" name=" temporary data object is correctly populated with form data" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>
