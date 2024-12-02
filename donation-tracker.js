@@ -107,7 +107,7 @@ function validateCharityName(charityName, node){
 }
 
 /**
- * Validate donation input, creates errors if input is blank, less than 1.00, or non-numeric
+ * Validate donation input, creates errors if input is blank, non-numeric, or less than 1.00
  * @param {str} donationAmount - Value of donation amount input
  * @param {HTMLElement} node - Container of donation input
  * @returns - false if there was an error, otherwise returns true
@@ -121,14 +121,14 @@ function validateDonation(donationAmount, node){
         showError(node, "Donation cannot be blank.");
         return false;
     }
-    // Check if donation is less than $1.00
-    if(parseFloat(donationAmount) < 1.00){
-        showError(node, "Donation must be at least $1.00");
-        return false;
-    }
     // Check if donation is numeric
     if(!numericPattern.test(donationAmount)){
         showError(node, "Donation amount must be numeric.");
+        return false;
+    }
+    // Check if donation is less than $1.00
+    if(parseFloat(donationAmount) < 1.00){
+        showError(node, "Donation must be at least $1.00");
         return false;
     }
     
