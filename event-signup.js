@@ -6,8 +6,10 @@ if(typeof window === "undefined") {
                         formDataObject,
                         validateEventName,  
                         validateRepresentativeName, 
-                        validateRepresentativeEmail, 
-                        validateRoleSelection };
+                        validateRepresentativeEmail,
+                        validateRoleSelection,
+                        saveDatatoLocalStorage
+                    };
 } else {
     // on load window, invoke init
     window.onload = init;

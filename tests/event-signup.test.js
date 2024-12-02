@@ -5,7 +5,8 @@ const {
     validateEventName,
     validateRepresentativeName,
     validateRepresentativeEmail,
-    validateRoleSelection
+    validateRoleSelection,
+    saveDatatoLocalStorage
     } = require("../event-signup");
 
 const { JSDOM } = require("jsdom");
@@ -201,3 +202,9 @@ test("formData object is created on valid form submission", () => {
 
     expect(result).toEqual(expected);
 });
+
+
+test("data is correctly stored in localStorage"), () => {
+
+
+}
