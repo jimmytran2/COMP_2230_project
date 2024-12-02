@@ -22,6 +22,7 @@ function init(){
     
     // Invokes function to attach event listener to form and function to form
     attachEventListener(formNode, validateForm);
+    displayData();
 }
 
 
@@ -56,7 +57,6 @@ function validateForm(){
     const representativeNameInputNode = document.querySelector("#representative-name");
     const isValidRepName = validateRepresentativeName(representativeNameInputNode.value, representativeNameSection);
 
-
     const representativeEmailSection = document.querySelector("#representative-email-section");
     const representativeEmailInputNode = document.querySelector("#representative-email");
     const isValidRepEmail = validateRepresentativeEmail(representativeEmailInputNode.value, representativeEmailSection);
@@ -70,7 +70,14 @@ function validateForm(){
     // if all 4 inputs are valid, invoke function to create data object
     if(isValidEventName && isValidRepName && isValidRepEmail && isValidRole){
         data = formDataObject(eventNameInputNode.value, representativeNameInputNode.value, representativeEmailInputNode.value, roleSelectionNode.value);
+        displayData();
     }
+
+    // clear the inputs after submitting
+    eventNameInputNode.value = "";
+    representativeNameInputNode.value = "";
+    representativeEmailInputNode.value = "";
+    roleSelectionNode.value = "";
 
     return data;
 }
@@ -92,9 +99,44 @@ function formDataObject(event, name, email, role){
                     role: role
     };
     console.log(formData);
+    saveDatatoLocalStorage(formData);
     return formData;
 }
 
+function saveDatatoLocalStorage(formData){
+    let storedData = JSON.parse(localStorage.getItem("storedData"));
+
+    if(!storedData){
+        storedData = [];
+    }
+
+    storedData.push(formData);
+
+    localStorage.setItem("storedData", JSON.stringify(storedData));
+}
+
+function displayData(){
+    let entries = JSON.parse(localStorage.getItem("storedData"))
+    const tableBody = document.querySelector("#signup-table-body")
+
+    tableBody.textContent = "";
+
+    if(entries){
+        for(let i = 0; i < entries.length; i++){
+            const newRow = tableBody.insertRow(-1);
+
+            const eventNameRow = newRow.insertCell(0);
+            const repNameRow = newRow.insertCell(1);
+            const repEmailRow = newRow.insertCell(2);
+            const roleRow = newRow.insertCell(3);
+            
+            eventNameRow.textContent = entries[i].event;
+            repNameRow.textContent = entries[i].name;
+            repEmailRow.textContent = entries[i].email;
+            roleRow.textContent = entries[i].role;
+        }
+    }
+}
 
 /**
  * Validates the event name input by checking if it is empty.

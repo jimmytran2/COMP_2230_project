@@ -82,3 +82,6 @@ inputs, select, fieldsets{
     margin-bottom: 10px; 
 }
 
+h2 {
+    text-align: center;
+}
