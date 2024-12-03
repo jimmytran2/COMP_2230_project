@@ -202,6 +202,10 @@ function escapeHTML(input) {
         .replace(/'/g, "&#039;");
 }
 
+/**
+ * Store's the donation object in localStorage
+ * @param {object} data - Data object of donation being saved
+ */
 function saveData(data){
     // retrieve all donations from localStorage
     let userDonations = JSON.parse(localStorage.getItem("allDonations"));
@@ -217,6 +221,9 @@ function saveData(data){
     localStorage.setItem("allDonations", JSON.stringify(userDonations));
 }
 
+/**
+ * Reads donations from localStorage and updates the table to display them
+ */
 function displayData(){
     // Select table body
     const donationsTable = document.querySelector("#donations-table").getElementsByTagName("tbody")[0];
@@ -269,6 +276,9 @@ function displayData(){
     }
 }
 
+/**
+ * Reads the donations saved in localStorage and updates the summary section of the webpage with the total
+ */
 function updateSummary(){
     // Select summary and clear
     const summaryNode = document.querySelector("#summary");
