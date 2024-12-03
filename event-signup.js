@@ -128,15 +128,26 @@ function displayData(){
         for(let i = 0; i < entries.length; i++){
             const newRow = tableBody.insertRow(-1);
 
-            const eventNameRow = newRow.insertCell(0);
-            const repNameRow = newRow.insertCell(1);
-            const repEmailRow = newRow.insertCell(2);
-            const roleRow = newRow.insertCell(3);
+            const eventNameCell = newRow.insertCell(0);
+            const repNameCell = newRow.insertCell(1);
+            const repEmailCell = newRow.insertCell(2);
+            const roleCell = newRow.insertCell(3);
+            const deleteCell = newRow.insertCell(4);
             
-            eventNameRow.textContent = entries[i].event;
-            repNameRow.textContent = entries[i].name;
-            repEmailRow.textContent = entries[i].email;
-            roleRow.textContent = entries[i].role;
+            eventNameCell.textContent = entries[i].event;
+            repNameCell.textContent = entries[i].name;
+            repEmailCell.textContent = entries[i].email;
+            roleCell.textContent = entries[i].role;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = "Delete";
+            deleteCell.appendChild(deleteButton);
+
+            deleteButton.addEventListener("click", () => {
+                entries.splice(i, 1);
+                localStorage.setItem("storedData", JSON.stringify(entries));
+                displayData();
+            })
         }
     }
 }
