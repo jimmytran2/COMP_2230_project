@@ -8,7 +8,8 @@ if(typeof window === "undefined") {
                         validateRepresentativeName, 
                         validateRepresentativeEmail,
                         validateRoleSelection,
-                        saveDatatoLocalStorage
+                        saveDatatoLocalStorage,
+                        displayData
                     };
 } else {
     // on load window, invoke init
