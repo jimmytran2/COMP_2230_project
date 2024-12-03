@@ -7,7 +7,8 @@ if (typeof window === "undefined") {
         validateHoursVolunteered,
         validateDate,
         validateExperienceRating,
-        validateFormSubmit 
+        validateFormSubmit,
+        loadLoggedHours
     };
 } else {
     // run init function when window loads
@@ -21,6 +22,7 @@ if (typeof window === "undefined") {
 function init() {
     const formNode = document.querySelector("#volunteer-tracker");
     attachEventListener(formNode, validateFormSubmit);
+    loadLoggedHours();
 }
 
 
@@ -36,6 +38,58 @@ function attachEventListener(node, callback) {
     });
 }
 
+/**
+ * Save data to local storage
+ * @param {Object} data - Data object to be saved
+ */
+function saveToLocalStorage(data) {
+    let loggedHours = JSON.parse(localStorage.getItem('loggedHours')) || [];
+    loggedHours.push(data);
+    localStorage.setItem('loggedHours', JSON.stringify(loggedHours));
+}
+
+
+/**
+ * Load logged hours from local storage and display them in the table
+ */
+function loadLoggedHours() {
+    const loggedHours = JSON.parse(localStorage.getItem('loggedHours')) || [];
+    const tableBody = document.querySelector("#logged-hours-table tbody");
+    tableBody.innerHTML = ""; // Clear existing rows
+
+    loggedHours.forEach(entry => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${entry.name}</td>
+            <td>${entry.hours}</td>
+            <td>${entry.date}</td>
+            <td>${entry.rating}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+
+/**
+ * Clears the form inputs after submission
+ */
+function clearForm() {
+    document.querySelector("#charity-name").value = "";
+    document.querySelector("#hours-volunteered").value = "";
+    document.querySelector("#date").value = "";
+    document.querySelector("#experience-rating").selectedIndex = 0; // Reset to default
+}
+
+
+/**
+ * Clears all error messages that have .error-message class
+ */
+function clearErrors() {
+    const errorMessages = document.querySelectorAll(".error-message");
+    for (const errors of errorMessages) {
+        errors.remove();
+    }
+}
 
 /**
  * Validate form inputs and creates temporary data object if all tests pass
@@ -69,7 +123,11 @@ function validateFormSubmit() {
     // If all validations passed
     if (isValid) {
        data = createDataObject(charityNameInput, Number(hoursVolunteeredInput), dateInput, Number(experienceRatingInput));
+        saveToLocalStorage(data);
+        clearForm();
+        loadLoggedHours();
     }
+
 
     // return data object
     return data;
