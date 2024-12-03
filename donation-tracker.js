@@ -59,9 +59,7 @@ function validateFormSubmit(){
     const donationDateInput = escapeHTML(document.querySelector("#donation-date").value);
     const isDateValid = validateDate(donationDateInput, donationDateNode);
 
-    // const donorCommentNode = document.querySelector("#donor-comment-section");
     const donorCommentInput = escapeHTML(document.querySelector("#donor-comment").value);
-    // const isCommentsValid = validateComments(donorCommentInput, donorCommentNode);
 
     // Check if all validations passsed, doesn't check for comments
     const isValid = isCharityNameValid && isDonationValid && isDateValid;

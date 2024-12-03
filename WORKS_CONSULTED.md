@@ -3,6 +3,8 @@ https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table_intro
 localStorage jest test
 https://medium.com/@criszamcham/test-cases-with-jest-local-storage-and-dom-mock-f9144ae9c63c
 https://robertmarshall.dev/blog/how-to-mock-local-storage-in-jest-tests/
+table css
+https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Styling_tables
 
 
 ## Madeleine
