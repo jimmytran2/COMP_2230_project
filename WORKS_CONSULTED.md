@@ -24,6 +24,10 @@ delete button
 https://www.sitepoint.com/community/t/adding-rows-to-table-with-button-to-remove/434396
 delete specific index from array
 https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array-in-javascript
+toFixed
+https://www.w3schools.com/jsref/jsref_tofixed.asp
+jest test button click
+https://salesforce.stackexchange.com/questions/368866/how-do-you-jest-test-a-simple-click-with-no-event
 ## Jimmy
 Module 4 Notes and Assignments - Forms
 

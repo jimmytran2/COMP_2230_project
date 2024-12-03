@@ -7,7 +7,8 @@ if(typeof window === "undefined") {
         validateDate,
         validateFormSubmit,
         saveData,
-        displayData};
+        displayData,
+        updateSummary};
 } else {
     // run init fuction when window loads
     window.onload = init;
@@ -285,7 +286,7 @@ function updateSummary(){
         }
     }
 
-    let result = `Total donation amount: $${donations}`;
+    let result = `Total donation amount: $${donations.toFixed(2)}`;
     const summary = document.createElement("h2");
     summary.textContent = result;
     summaryNode.appendChild(summary);

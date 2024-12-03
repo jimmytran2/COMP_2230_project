@@ -5,7 +5,8 @@ const { attachEventListener,
     validateDate, 
     validateFormSubmit, 
     saveData, 
-    displayData} = require("../donation-tracker.js");
+    displayData,
+    updateSummary} = require("../donation-tracker.js");
 
 const { JSDOM } = require("jsdom");
 // Source cited in WORKS_CONSULTED.md
@@ -82,6 +83,10 @@ test("validateFormSubmit correctly collects form data", () =>{
                             <!-- rows injected by js -->
                         </tbody>
                     </table>
+                </section>
+                <hr>
+                <section id="summary">
+                <!-- summary injected by js -->
                 </section>
                 </form>`)
 
@@ -249,5 +254,239 @@ describe("test localstorage", () =>{
         // Check the amount of rows
         // Sourced cited in WORKS_CONSULTED.md
         expect(donationsTable.rows.length).toEqual(1);
+    });
+});
+
+describe("test summary section", () =>{
+     // Clear local storage before each test
+    beforeEach(() => {
+        localStorage.clear();
+    });
+
+    test("updateSummary correctly calculates and displays the total amount donated", () =>{
+        // setup dom
+        const dom = new JSDOM(
+            `<!DOCTYPE html>
+                            <section id="donations-table-section">
+                <h2>Donations</h2>
+                <table id="donations-table">
+                    <thead>
+                        <tr>
+                            <th>Charity Name</th>
+                            <th>Donation Amount</th>
+                            <th>Date of Donation</th>
+                            <th>Donor Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- rows injected by js -->
+                    </tbody>
+                </table>
+            </section>
+            <hr>
+            <section id="summary">
+                <!-- summary injected by js -->
+            </section>
+            </form>`);
+        global.document = dom.window.document;
+    
+        // Make 2 donations
+        const donation = {
+            name: "charity",
+            donation: "2.50",
+            date: "2020-11-11",
+            comment: "hello"
+        }
+        saveData(donation);
+        const donation2 = {
+            name: "charity 2",
+            donation: "500",
+            date: "2020-11-11",
+            comment: "hello"
+        }
+        saveData(donation2);
+    
+        updateSummary();
+        const expected = `Total donation amount: $502.50`;
+        const summaryNode = document.querySelector("#summary");
+        const result = summaryNode.textContent;
+
+        expect(result).toBe(expected);
+    });
+
+});
+
+describe("test delete button", () =>{
+    // Clear local storage before each test
+    beforeEach(() => {
+        localStorage.clear();
+    });
+    test("Delete button removes a record from the table", () => {
+        // setup dom
+        const dom = new JSDOM(
+            `<!DOCTYPE html>
+                            <section id="donations-table-section">
+                <h2>Donations</h2>
+                <table id="donations-table">
+                    <thead>
+                        <tr>
+                            <th>Charity Name</th>
+                            <th>Donation Amount</th>
+                            <th>Date of Donation</th>
+                            <th>Donor Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- rows injected by js -->
+                    </tbody>
+                </table>
+            </section>
+            <hr>
+            <section id="summary">
+                <!-- summary injected by js -->
+            </section>
+            </form>`);
+        global.document = dom.window.document;
+
+        // make 2 donations
+        const donation = {
+            name: "charity",
+            donation: "2.50",
+            date: "2020-11-11",
+            comment: "hello"
+        }
+        saveData(donation);
+        const donation2 = {
+            name: "charity",
+            donation: "500",
+            date: "2020-11-11",
+            comment: "hello"
+        }
+        saveData(donation2);
+        displayData();
+
+        // select first button via class name
+        const deleteButton = document.querySelector('.delete-button');
+
+        // source cited in WORKS_CONSULTED.md
+        deleteButton.click();
+
+        // select table body
+        const donationsTable = document.querySelector("#donations-table").getElementsByTagName("tbody")[0];
+
+        // Check the amount of rows
+        expect(donationsTable.rows.length).toEqual(1);
+
+    });
+
+    test("Delete button removes a record from localStorage", () => {
+        // setup dom
+        const dom = new JSDOM(
+            `<!DOCTYPE html>
+                            <section id="donations-table-section">
+                <h2>Donations</h2>
+                <table id="donations-table">
+                    <thead>
+                        <tr>
+                            <th>Charity Name</th>
+                            <th>Donation Amount</th>
+                            <th>Date of Donation</th>
+                            <th>Donor Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- rows injected by js -->
+                    </tbody>
+                </table>
+            </section>
+            <hr>
+            <section id="summary">
+                <!-- summary injected by js -->
+            </section>
+            </form>`);
+        global.document = dom.window.document;
+
+        // make 2 donations
+        const donation = {
+            name: "charity",
+            donation: "2.50",
+            date: "2020-11-11",
+            comment: "hello"
+        }
+        saveData(donation);
+        const donation2 = {
+            name: "charity",
+            donation: "500",
+            date: "2020-11-11",
+            comment: "hello"
+        }
+        saveData(donation2);
+        displayData();
+
+        // select first button via class name
+        const deleteButton = document.querySelector('.delete-button');
+
+        // source cited in WORKS_CONSULTED.md
+        deleteButton.click();
+
+        // Retrieve allDonations as array
+        const donations = JSON.parse(localStorage.getItem("allDonations"));
+        // checks for array length
+        expect(donations).toHaveLength(1);
+    });
+
+    test("Total donation amount in summary section is updated when donation is deleted", () => {
+        // setup dom
+        const dom = new JSDOM(
+            `<!DOCTYPE html>
+                            <section id="donations-table-section">
+                <h2>Donations</h2>
+                <table id="donations-table">
+                    <thead>
+                        <tr>
+                            <th>Charity Name</th>
+                            <th>Donation Amount</th>
+                            <th>Date of Donation</th>
+                            <th>Donor Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- rows injected by js -->
+                    </tbody>
+                </table>
+            </section>
+            <hr>
+            <section id="summary">
+                <!-- summary injected by js -->
+            </section>
+            </form>`);
+        global.document = dom.window.document;
+    
+        // Make 2 donations
+        const donation = {
+            name: "charity",
+            donation: "2.50",
+            date: "2020-11-11",
+            comment: "hello"
+        }
+        saveData(donation);
+        const donation2 = {
+            name: "charity 2",
+            donation: "500",
+            date: "2020-11-11",
+            comment: "hello"
+        }
+        saveData(donation2);
+        displayData();
+
+        // select first button via class name
+        const deleteButton = document.querySelector('.delete-button');
+        deleteButton.click();
+
+        const expected = `Total donation amount: $500.00`;
+        const summaryNode = document.querySelector("#summary");
+        const result = summaryNode.textContent;
+
+        expect(result).toBe(expected);
     });
 });
