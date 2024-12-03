@@ -25,3 +25,6 @@ https://stackoverflow.com/questions/56839801/jest-js-error-received-serializes-t
 Removing elements from array
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
 
+Sorting the output using .sort()
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+

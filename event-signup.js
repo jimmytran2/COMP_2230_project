@@ -125,6 +125,21 @@ function displayData(){
     tableBody.textContent = "";
 
     if(entries){
+
+        entries.sort((a, b) => {
+            // compares alphabetically
+            if (a.role > b.role) {
+                // a comes after b
+                return 1;
+            } else if (a.role < b.role) {
+                // a comes before b
+                return -1;
+            }
+            // a and b are the same
+            return 0;
+        });
+        
+
         for(let i = 0; i < entries.length; i++){
             const newRow = tableBody.insertRow(-1);
 
@@ -139,18 +154,26 @@ function displayData(){
             repEmailCell.textContent = entries[i].email;
             roleCell.textContent = entries[i].role;
 
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = "Delete";
+            const deleteButton = addDeleteButton(i, entries);
             deleteCell.appendChild(deleteButton);
-
-            deleteButton.addEventListener("click", () => {
-                entries.splice(i, 1);
-                localStorage.setItem("storedData", JSON.stringify(entries));
-                displayData();
-            })
         }
     }
 }
+
+function addDeleteButton(index, entries){
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = "Delete";
+    deleteButton.classList.add('delete-button');
+
+    deleteButton.addEventListener("click", () => {
+        entries.splice(index, 1);
+        localStorage.setItem("storedData", JSON.stringify(entries));
+        displayData();
+    })
+    return deleteButton;
+}
+
+
 
 /**
  * Validates the event name input by checking if it is empty.
