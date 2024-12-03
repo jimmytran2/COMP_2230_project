@@ -106,24 +106,38 @@ function formDataObject(event, name, email, role){
     return formData;
 }
 
+
+/**
+ * Saves the formData object to localStorage
+ * @param {object} formData - object to be saved in localStorage
+ */
 function saveDatatoLocalStorage(formData){
+    // grabs array from localStorage with key "storedData"
     let storedData = JSON.parse(localStorage.getItem("storedData"));
 
+    // if it doesnt exist, create an empty array
     if(!storedData){
         storedData = [];
     }
 
+    // add the formData object to the array
     storedData.push(formData);
 
+    // set the new array to localStorage
     localStorage.setItem("storedData", JSON.stringify(storedData));
 }
 
+
+/**
+ * Takes data from localStorage, sorts them by role, displays them to webpage's table
+ */
 function displayData(){
     let entries = JSON.parse(localStorage.getItem("storedData"))
     const tableBody = document.querySelector("#signup-table-body")
 
     tableBody.textContent = "";
 
+    // if storedData exists
     if(entries){
 
         entries.sort((a, b) => {
@@ -139,7 +153,7 @@ function displayData(){
             return 0;
         });
         
-
+        // loop through array creating rows, inserting them, adding cells and adding content to cells
         for(let i = 0; i < entries.length; i++){
             const newRow = tableBody.insertRow(-1);
 
@@ -153,21 +167,33 @@ function displayData(){
             repNameCell.textContent = entries[i].name;
             repEmailCell.textContent = entries[i].email;
             roleCell.textContent = entries[i].role;
-
+            
+            // adds delete button to each entry
             const deleteButton = addDeleteButton(i, entries);
             deleteCell.appendChild(deleteButton);
         }
     }
 }
 
+
+/**
+ * Creates a delete button that deletes an entry from the table and localStorage.
+ * @param {number} index - the index of the entry to be deleted
+ * @param {array} entries - the array of entries
+ * @returns {HTMLelement} - the delete button element
+ */
 function addDeleteButton(index, entries){
     const deleteButton = document.createElement('button');
     deleteButton.textContent = "Delete";
     deleteButton.classList.add('delete-button');
 
     deleteButton.addEventListener("click", () => {
+
+        // splice: choose the index, and the number of items to be remove from that point
         entries.splice(index, 1);
         localStorage.setItem("storedData", JSON.stringify(entries));
+
+        // redisplays the data with the new updated table
         displayData();
     })
     return deleteButton;
