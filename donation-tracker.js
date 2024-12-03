@@ -5,7 +5,9 @@ if(typeof window === "undefined") {
         validateCharityName,
         validateDonation,
         validateDate,
-        validateFormSubmit};
+        validateFormSubmit,
+        saveData,
+        displayData};
 } else {
     // run init fuction when window loads
     window.onload = init;

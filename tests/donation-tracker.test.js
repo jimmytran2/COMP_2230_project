@@ -1,6 +1,16 @@
-const { attachEventListener, createDataObject, validateCharityName, validateDonation, validateDate, validateFormSubmit} = require("../donation-tracker.js");
+const { attachEventListener, 
+    createDataObject, 
+    validateCharityName, 
+    validateDonation, 
+    validateDate, 
+    validateFormSubmit, 
+    saveData, 
+    displayData} = require("../donation-tracker.js");
 
 const { JSDOM } = require("jsdom");
+// Source cited in WORKS_CONSULTED.md
+const { LocalStorage } = require("node-localstorage");
+global.localStorage = new LocalStorage("./scratch");
 
 test("callback is triggered on form submission", () => {
     // fake function; only returns true
@@ -56,6 +66,23 @@ test("validateFormSubmit correctly collects form data", () =>{
                 <div>
                     <button type="submit" id="submit-button">Submit</button>
                 </div>
+                <hr>
+                <section id="donations-table-section">
+                    <h2>Donations</h2>
+                    <table id="donations-table">
+                        <thead>
+                            <tr>
+                                <th>Charity Name</th>
+                                <th>Donation Amount</th>
+                                <th>Date of Donation</th>
+                                <th>Donor Comment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- rows injected by js -->
+                        </tbody>
+                    </table>
+                </section>
                 </form>`)
 
     global.document = dom.window.document;
@@ -159,4 +186,67 @@ test("temporary data object is correctly populated with form data", () =>{
     }
 
     expect(result).toEqual(expected);
+});
+
+describe("test localstorage", () =>{
+    beforeEach(() => {
+        localStorage.clear(); // Clear local storage before each test
+    });
+
+    test("saveData correctly stores data in localStorage", () => {
+        const donation = {
+            name: "charity",
+            donation: "2.00",
+            date: "2020-11-11",
+            comment: "hello"
+        }
+        saveData(donation);
+
+        // Retrieve allDonations as array
+        const donations = JSON.parse(localStorage.getItem("allDonations"));
+        
+        // checks array index
+        expect(donations[0]).toEqual(donation);
+        // checks for array length
+        //expect(donations).toHaveLength(1);
+    });
+    
+    test("data is correctly retrieved from localStorage and loaded into the table", () => {
+        const dom = new JSDOM(
+            `<!DOCTYPE html>
+                            <section id="donations-table-section">
+                <h2>Donations</h2>
+                <table id="donations-table">
+                    <thead>
+                        <tr>
+                            <th>Charity Name</th>
+                            <th>Donation Amount</th>
+                            <th>Date of Donation</th>
+                            <th>Donor Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- rows injected by js -->
+                    </tbody>
+                </table>
+            </section>
+            </form>`);
+        global.document = dom.window.document;
+
+        const donation = {
+            name: "charity",
+            donation: "2.00",
+            date: "2020-11-11",
+            comment: "hello"
+        }
+        saveData(donation);
+        displayData();
+
+        // select table body
+        const donationsTable = document.querySelector("#donations-table").getElementsByTagName("tbody")[0];
+
+        // Check the amount of rows
+        // Sourced cited in WORKS_CONSULTED.md
+        expect(donationsTable.rows.length).toEqual(1);
+    });
 });
