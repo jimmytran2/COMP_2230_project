@@ -30,6 +30,8 @@ toFixed
 https://www.w3schools.com/jsref/jsref_tofixed.asp
 jest test button click
 https://salesforce.stackexchange.com/questions/368866/how-do-you-jest-test-a-simple-click-with-no-event
+cell text align
+https://stackoverflow.com/questions/20921925/align-cell-javascript
 ## Jimmy
 Module 4 Notes and Assignments - Forms
 

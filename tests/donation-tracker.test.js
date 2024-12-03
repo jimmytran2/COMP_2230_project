@@ -307,7 +307,7 @@ describe("test summary section", () =>{
         saveData(donation2);
     
         updateSummary();
-        const expected = `Total donation amount: $502.50`;
+        const expected = `Total Donation Amount: $502.50`;
         const summaryNode = document.querySelector("#summary");
         const result = summaryNode.textContent;
 
@@ -483,7 +483,7 @@ describe("test delete button", () =>{
         const deleteButton = document.querySelector('.delete-button');
         deleteButton.click();
 
-        const expected = `Total donation amount: $500.00`;
+        const expected = `Total Donation Amount: $500.00`;
         const summaryNode = document.querySelector("#summary");
         const result = summaryNode.textContent;
 

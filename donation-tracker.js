@@ -262,6 +262,7 @@ function displayData(){
             dateCell.textContent = retrievedDonations[i].date;
             commentCell.textContent = retrievedDonations[i].comment;
             deleteCell.appendChild(deleteButton);
+            deleteCell.style.textAlign = "center";
 
 
         }
@@ -284,7 +285,7 @@ function updateSummary(){
         }
     }
 
-    let result = `Total donation amount: $${donations.toFixed(2)}`;
+    let result = `Total Donation Amount: $${donations.toFixed(2)}`;
     const summary = document.createElement("h2");
     summary.textContent = result;
     summaryNode.appendChild(summary);
