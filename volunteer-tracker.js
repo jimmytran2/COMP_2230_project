@@ -60,7 +60,7 @@ function validateFormSubmit() {
     const isDateValid = validateDate(dateInput, dateNode);
 
     const experienceRatingNode = document.querySelector("#experience-rating");
-    const experienceRatingInput = escapeHTML(document.querySelector("#experience-rating").value);
+    const experienceRatingInput = experienceRatingNode.value;
     const isExperienceRatingValid = validateExperienceRating(experienceRatingInput, experienceRatingNode);
 
     // Check if all validations passed
@@ -148,15 +148,14 @@ function validateDate(date, node) {
  * @returns - false if there was an error, otherwise returns true
  */
 function validateExperienceRating(experienceRating, node) {
-    if (experienceRating.length <= 0) {
-        showError(node, "Please select an experience rating.");
+    if (!experienceRating || experienceRating === "") {
+        showError(node.parentElement, "Please select an experience rating.");
         return false;
     }
 
-    // Check if experience rating is a number and within the valid range (1-5)
     const ratingValue = Number(experienceRating);
     if (isNaN(ratingValue) || ratingValue < 1 || ratingValue > 5) {
-        showError(node, "Experience rating must be between 1 and 5.");
+        showError(node.parentElement, "Experience rating must be between 1 and 5.");
         return false;
     }
 
