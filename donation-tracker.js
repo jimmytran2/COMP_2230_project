@@ -21,6 +21,7 @@ function init(){
     attachEventListener(formNode, validateFormSubmit);
     // Load data
     displayData();
+    updateSummary();
 }
 
 /**
@@ -69,6 +70,7 @@ function validateFormSubmit(){
         data = createDataObject(charityNameInput, donationAmountInput, donationDateInput, donorCommentInput);
         saveData(data);
         displayData();
+        updateSummary();
     }
 
     return data;
@@ -252,6 +254,7 @@ function displayData(){
                 retrievedDonations.splice(i, 1)
                 // save to localStorage
                 localStorage.setItem("allDonations", JSON.stringify(retrievedDonations));
+                updateSummary();
             });
 
             // Add data to cells
@@ -264,4 +267,26 @@ function displayData(){
 
         }
     }
+}
+
+function updateSummary(){
+    // Select summary and clear
+    const summaryNode = document.querySelector("#summary");
+    summaryNode.textContent = "";
+    // Retrieve donations from localStorage as array
+    let retrievedDonations = JSON.parse(localStorage.getItem("allDonations"));
+    let donations = 0;
+
+    // If there are any donations
+    if (retrievedDonations){
+        // Loop through and add all donation amounts
+        for (let i = 0; i < retrievedDonations.length; i++){
+            donations += parseFloat(retrievedDonations[i].donation);
+        }
+    }
+
+    let result = `Total donation amount: $${donations}`;
+    const summary = document.createElement("h2");
+    summary.textContent = result;
+    summaryNode.appendChild(summary);
 }
