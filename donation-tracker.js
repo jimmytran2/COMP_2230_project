@@ -237,12 +237,30 @@ function displayData(){
             const donationCell = tableRow.insertCell(1);
             const dateCell = tableRow.insertCell(2);
             const commentCell = tableRow.insertCell(3);
+            const deleteCell = tableRow.insertCell(4);
+
+            // Create delete button
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "X";
+            deleteButton.className = "delete-button";
+            deleteButton.addEventListener("click", () =>{
+                // If button is clicked, remove the buttons table row
+                deleteButton.parentElement.parentElement.remove();
+
+                // Remove from retrievedDonations
+                // Source cited in WORKS_CONSULTED.md
+                retrievedDonations.splice(i, 1)
+                // save to localStorage
+                localStorage.setItem("allDonations", JSON.stringify(retrievedDonations));
+            });
 
             // Add data to cells
             nameCell.textContent = retrievedDonations[i].name;
-            donationCell.textContent = retrievedDonations[i].donation;
+            donationCell.textContent = `$${retrievedDonations[i].donation}`;
             dateCell.textContent = retrievedDonations[i].date;
             commentCell.textContent = retrievedDonations[i].comment;
+            deleteCell.appendChild(deleteButton);
+
 
         }
     }

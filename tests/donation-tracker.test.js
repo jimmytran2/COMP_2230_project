@@ -188,6 +188,7 @@ test("temporary data object is correctly populated with form data", () =>{
     expect(result).toEqual(expected);
 });
 
+// Sources cited in WORKS_CONSULTED.md
 describe("test localstorage", () =>{
     beforeEach(() => {
         localStorage.clear(); // Clear local storage before each test
