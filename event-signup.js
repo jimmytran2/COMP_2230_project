@@ -184,7 +184,7 @@ function displayData(){
  */
 function addDeleteButton(index, entries){
     const deleteButton = document.createElement('button');
-    deleteButton.textContent = "Delete";
+    deleteButton.textContent = "X";
     deleteButton.classList.add('delete-button');
 
     deleteButton.addEventListener("click", () => {

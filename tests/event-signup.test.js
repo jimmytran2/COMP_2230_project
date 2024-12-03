@@ -279,8 +279,150 @@ describe("test localStorage", () => {
         displayData();
 
         expected = global.document.querySelector("#signup-table-body").innerHTML;
-        actualHTML = ('<tr><td>FunRun2024</td><td>Matt Damon</td><td>matt@gmail.com</td><td>Sponsor</td></tr>');
+        actualHTML = ('<tr><td>FunRun2024</td><td>Matt Damon</td><td>matt@gmail.com</td><td>Sponsor</td><td><button class=\"delete-button\">X</button></td></tr>');
 
         expect(expected).toBe(actualHTML);
     });
+
+    test("table correctly displays signups by role", () => {
+        const dom = new JSDOM(`<!DOCTYPE html>
+                                    <section id="signup-table-section">
+                                        <table id="signup-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Event Name</th>
+                                                    <th>Representative's Name</th>
+                                                    <th>Representative's Email</th>
+                                                    <th>Role</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="signup-table-body">
+                                                <!-- Rows will me injected here with javascript -->
+                                            </tbody>
+                                        </table>
+                                    </section>`)
+
+        global.document = dom.window.document;
+        
+        let formData = [
+            {event: "FunRun2024", name: "Matt Damon", email: "matt@gmail.com", role: "Sponsor" },
+            {event: "RacefortheCure", name: "Michael Scott", email: "dmifflin@gmail.com", role: "Organizer" },
+            {event: "Olympics", name: "Usain Bolt", email: "speed@gmail.com", role: "Participant" },
+            {event: "ManitobaMarathon", name: "Jimmy Tran", email: "jimmy@gmail.com", role: "Sponsor" },
+            {event: "TerryFoxRun", name: "Terry Fox", email: "tfox@gmail.com", role: "Organizer" },
+            {event: "PistonCup", name: "Lightning McQueen", email: "speed@gmail.com", role: "Participant" },
+        ];
+
+        formData.forEach(formData => {
+            saveDatatoLocalStorage(formData);
+        })
+
+        displayData();
+
+        expected = global.document.querySelector("#signup-table-body").textContent;
+        actualHTML = ('RacefortheCureMichael Scottdmifflin@gmail.comOrganizerX' +
+                      'TerryFoxRunTerry Foxtfox@gmail.comOrganizerX' +
+                      'OlympicsUsain Boltspeed@gmail.comParticipantX' +
+                      'PistonCupLightning McQueenspeed@gmail.comParticipantX'+
+                      'FunRun2024Matt Damonmatt@gmail.comSponsorX' +
+                      'ManitobaMarathonJimmy Tranjimmy@gmail.comSponsorX'
+                    );
+
+        expect(expected).toBe(actualHTML);
+    })
+
+});
+
+
+
+describe("test delete button works", () => {
+    beforeEach(() => {
+        // Clear local storage before each test
+        localStorage.clear(); 
+    })
+
+    test("delete button removes a record from table", () => {
+        const dom = new JSDOM(`<!DOCTYPE html>
+                                    <section id="signup-table-section">
+                                        <table id="signup-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Event Name</th>
+                                                    <th>Representative's Name</th>
+                                                    <th>Representative's Email</th>
+                                                    <th>Role</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="signup-table-body">
+                                                <!-- Rows will me injected here with javascript -->
+                                            </tbody>
+                                        </table>
+                                    </section>`)
+
+        global.document = dom.window.document;
+
+        let formData = [
+            {event: "FunRun2024", name: "Matt Damon", email: "matt@gmail.com", role: "Sponsor" },
+            {event: "Olympics", name: "Usain Bolt", email: "speed@gmail.com", role: "Participant" },
+            {event: "RacefortheCure", name: "Michael Scott", email: "dmifflin@gmail.com", role: "Organizer" },
+        ];
+
+        formData.forEach(formData => {
+            saveDatatoLocalStorage(formData);
+        })
+
+        displayData();
+
+        const deleteButton = document.querySelector('.delete-button');
+        // deletes the latest entry
+        deleteButton.click();
+
+        expected = global.document.querySelector("#signup-table-body").textContent;
+        actualHTML = ('OlympicsUsain Boltspeed@gmail.comParticipantX' +
+                      'FunRun2024Matt Damonmatt@gmail.comSponsorX'
+                    );
+        
+        expect(expected).toBe(actualHTML);
+    });
+
+    test("delete button removes a record from localStorage", () => {
+        const dom = new JSDOM(`<!DOCTYPE html>
+                                    <section id="signup-table-section">
+                                        <table id="signup-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Event Name</th>
+                                                    <th>Representative's Name</th>
+                                                    <th>Representative's Email</th>
+                                                    <th>Role</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="signup-table-body">
+                                                <!-- Rows will me injected here with javascript -->
+                                            </tbody>
+                                        </table>
+                                    </section>`)
+
+        global.document = dom.window.document;
+
+        let formData = [
+            {event: "FunRun2024", name: "Matt Damon", email: "matt@gmail.com", role: "Sponsor" },
+            {event: "Olympics", name: "Usain Bolt", email: "speed@gmail.com", role: "Participant" },
+            {event: "RacefortheCure", name: "Michael Scott", email: "dmifflin@gmail.com", role: "Organizer" },
+        ];
+
+        formData.forEach(formData => {
+            saveDatatoLocalStorage(formData);
+        })
+
+        displayData();
+
+        const deleteButton = document.querySelector('.delete-button');
+        // deletes the latest entry
+        deleteButton.click();
+
+        const result = JSON.parse(localStorage.getItem("storedData"));
+        expect(result.length).toEqual(2);
+    });
+
 });
