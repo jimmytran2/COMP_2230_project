@@ -9,7 +9,8 @@ if (typeof window === "undefined") {
         validateExperienceRating,
         validateFormSubmit,
         loadLoggedHours,
-        saveToLocalStorage
+        saveToLocalStorage,
+        deleteLoggedHours
     };
 } else {
     // run init function when window loads
@@ -49,7 +50,6 @@ function saveToLocalStorage(data) {
     localStorage.setItem('loggedHours', JSON.stringify(loggedHours));
 }
 
-
 /**
  * Load logged hours from local storage and display them in the table
  */
@@ -74,7 +74,10 @@ function loadLoggedHours() {
     });
 
     // Update total hours in summary section
-    document.getElementById("total-hours").textContent = `Total Hours Volunteered: ${totalHours}`;
+    const totalHoursElement = document.getElementById("total-hours");
+    if (totalHoursElement) {
+        totalHoursElement.textContent = `Total Hours Volunteered: ${totalHours}`;
+    }
 
     const deleteButtons = document.querySelectorAll(".delete-button");
     deleteButtons.forEach(button => {
@@ -83,7 +86,6 @@ function loadLoggedHours() {
             deleteLoggedHours(index);
         });
     });
-
 }
 
 
@@ -144,7 +146,6 @@ function validateFormSubmit() {
         clearForm();
         loadLoggedHours();
     }
-
 
     // return data object
     return data;
@@ -249,8 +250,6 @@ function showError(inputElement, message) {
     errorMessage.className = "error-message";
     inputElement.appendChild(errorMessage);
 }
-
-
 
 /**
  * Converts special characters to their corresponding HTML entities.

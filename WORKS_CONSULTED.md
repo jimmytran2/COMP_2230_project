@@ -10,7 +10,8 @@ clearing storage between each test
 https://developer.mozilla.org/en-US/docs/Web/API/Storage/clear
 localStorage and jest testing
 https://medium.com/@criszamcham/test-cases-with-jest-local-storage-and-dom-mock-f9144ae9c63c
-
+jest globals
+https://jestjs.io/docs/api
 
 
 ## Bhea

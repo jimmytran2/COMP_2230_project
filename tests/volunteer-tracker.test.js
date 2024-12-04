@@ -7,7 +7,8 @@ const {
   validateExperienceRating, 
   validateFormSubmit,
   saveToLocalStorage,
-  loadLoggedHours
+  loadLoggedHours,
+  deleteLoggedHours
 } = require("../volunteer-tracker.js");
 
 const { JSDOM } = require("jsdom");
@@ -23,46 +24,49 @@ beforeEach(() => {
 test("validateFormSubmit correctly collects form data", () => {
   // Setup DOM
   const dom = new JSDOM(`
-    <!DOCTYPE html>
-    <form id="volunteer-tracker">
-      <section id="charity-name-section">
-        <label for="charity-name">Charity Name:</label>
-        <input type="text" name="charity-name" id="charity-name" value="test charity">
+      <!DOCTYPE html>
+      <form id="volunteer-tracker">
+          <section id="charity-name-section">
+              <label for="charity-name">Charity Name:</label>
+              <input type="text" name="charity-name" id="charity-name" value="test charity">
+          </section>
+          <section id="hours-volunteered-section">
+              <label for="hours-volunteered">Hours Volunteered:</label>
+              <input type="number" name="hours-volunteered" id="hours-volunteered" value="2">
+          </section>
+          <section id="date-section">
+              <label for="date">Date:</label>
+              <input type="date" name="date" id="date" value="2020-12-30">
+          </section>
+          <section>
+              <label for="experience-rating">Volunteer Experience Rating:</label>
+              <select id="experience-rating" name="experience-rating">
+                  <option value="3" selected>3 Stars</option>
+              </select>
+          </section>
+          <div>
+              <button type="submit" id="submit-button">Submit</button>
+          </div>
+      </form>
+      <section id="logged-hours-section">
+          <h2>Logged Hours</h2>
+          <table id="logged-hours-table">
+              <thead>
+                  <tr>
+                      <th>Charity Name</th>
+                      <th>Hours Volunteered</th>
+                      <th>Date</th>
+                      <th>Experience Rating</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- Rows will be injected with JavaScript here -->
+              </tbody>
+          </table>
       </section>
-      <section id="hours-volunteered-section">
-        <label for="hours-volunteered">Hours Volunteered:</label>
-        <input type="number" name="hours-volunteered" id="hours-volunteered" value="2">
+      <section id="summary-section">
+          <h2 id="total-hours">Total Hours Volunteered: 0</h2>
       </section>
-      <section id="date-section">
-        <label for="date">Date:</label>
-        <input type="date" name="date" id="date" value="2020-12-30">
-      </section>
-      <section>
-        <label for="experience-rating">Volunteer Experience Rating:</label>
-        <select id="experience-rating" name="experience-rating">
-          <option value="" disabled>Select a rating</option>
-          <option value="1">1 Star</option>
-          <option value="2">2 Stars</option>
-          <option value="3" selected>3 Stars</option>
-          <option value="4">4 Stars</option>
-          <option value="5">5 Stars</option>
-        </select>
-      </section>
-      <button type="submit" id="submit-button">Submit</button>
-    </form>
-    <section id="logged-hours-section">
-      <table id="logged-hours-table">
-        <thead>
-          <tr>
-            <th>Charity Name</th>
-            <th>Hours Volunteered</th>
-            <th>Date</th>
-            <th>Experience Rating</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
   `);
 
   global.document = dom.window.document;
@@ -320,4 +324,163 @@ test("loadLoggedHours correctly retrieves data from localStorage and displays it
   expect(loggedHoursTable.rows[1].cells[1].textContent).toEqual(data2.hours.toString());
   expect(loggedHoursTable.rows[1].cells[2].textContent).toEqual(data2.date);
   expect(loggedHoursTable.rows[1].cells[3].textContent).toEqual(data2.rating.toString());
+});
+
+test("summary section correctly calculates and displays total hours volunteered", () => {
+  const dom = new JSDOM(`
+      <!DOCTYPE html>
+      <section id="summary-section">
+          <h2 id="total-hours">Total Hours Volunteered: 0</h2>
+      </section>
+      <section id="logged-hours-section">
+          <h2>Logged Hours</h2>
+          <table id="logged-hours-table">
+              <thead>
+                  <tr>
+                      <th>Charity Name</th>
+                      <th>Hours Volunteered</th>
+                      <th>Date</th>
+                      <th>Experience Rating</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- Rows will be injected with JavaScript here-->
+              </tbody>
+          </table>
+      </section>
+  `);
+  global.document = dom.window.document;
+
+  // Simulate adding entries
+  const data1 = { name: "charity 1", hours: 5, date: "2023-10-10", rating: 4 };
+  const data2 = { name: "charity 2", hours: 3, date: "2023-10-11", rating: 5 };
+  saveToLocalStorage(data1);
+  saveToLocalStorage(data2);
+  loadLoggedHours();
+
+  const totalHoursText = document.getElementById("total-hours").textContent;
+  expect(totalHoursText).toBe("Total Hours Volunteered: 8");
+});
+
+test("delete button removes a record from the table", () => {
+  const dom = new JSDOM(`
+      <!DOCTYPE html>
+      <section id="logged-hours-section">
+          <h2>Logged Hours</h2>
+          <table id="logged-hours-table">
+              <thead>
+                  <tr>
+                      <th>Charity Name</th>
+                      <th>Hours Volunteered</th>
+                      <th>Date</th>
+                      <th>Experience Rating</th>
+                      <th>Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- Rows will be injected with JavaScript here-->
+              </tbody>
+          </table>
+      </section>
+  `);
+  global.document = dom.window.document;
+
+  // Simulate adding an entry
+  const data = { name: "charity 1", hours: 5, date: "2023-10-10", rating: 4 };
+  saveToLocalStorage(data);
+  loadLoggedHours();
+
+  // Simulate delete button click
+  const deleteButton = document.querySelector('.delete-button');
+  deleteButton.click();
+
+  // Check if the table is empty after deletion
+  const loggedHoursTableBody = document.querySelector("#logged-hours-table tbody");
+  expect(loggedHoursTableBody.rows.length).toBe(0);
+});
+
+test("delete button removes a record from localStorage", () => {
+  const dom = new JSDOM(`
+      <!DOCTYPE html>
+      <section id="logged-hours-section">
+          <h2>Logged Hours</h2>
+          <table id="logged-hours-table">
+              <thead>
+                  <tr>
+                      <th>Charity Name</th>
+                      <th>Hours Volunteered</th>
+                      <th>Date</th>
+                      <th>Experience Rating</th>
+                      <th>Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- Rows will be injected with JavaScript here-->
+              </tbody>
+          </table>
+      </section>
+  `);
+  global.document = dom.window.document;
+
+  // Simulate adding entries
+  const data1 = { name: "charity 1", hours: 5, date: "2023-10-10", rating: 4 };
+  const data2 = { name: "charity 2", hours: 3, date: "2023-10-11", rating: 5 };
+  saveToLocalStorage(data1);
+  saveToLocalStorage(data2);
+  loadLoggedHours();
+
+  // Simulate delete button click for the first entry
+  const deleteButton = document.querySelector('.delete-button');
+  deleteButton.click();
+
+  // Check if the localStorage has the correct number of entries after deletion
+  const result = JSON.parse(localStorage.getItem("loggedHours"));
+  expect(result.length).toEqual(1);
+  expect(result[0]).toEqual(data2); 
+});
+
+test("total volunteered hours in the summary section is updated when a log is deleted", () => {
+  const dom = new JSDOM(`
+      <!DOCTYPE html>
+      <section id="summary-section">
+          <h2 id="total-hours">Total Hours Volunteered: 0</h2>
+      </section>
+      <section id="logged-hours-section">
+          <h2>Logged Hours</h2>
+          <table id="logged-hours-table">
+              <thead>
+                  <tr>
+                      <th>Charity Name</th>
+                      <th>Hours Volunteered</th>
+                      <th>Date</th>
+                      <th>Experience Rating</th>
+                      <th>Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- Rows will be injected with JavaScript here-->
+              </tbody>
+          </table>
+      </section>
+  `);
+  global.document = dom.window.document;
+
+  // Simulate adding entries
+  const data1 = { name: "charity 1", hours: 5, date: "2023-10-10", rating: 4 };
+  const data2 = { name: "charity 2", hours: 3, date: "2023-10-11", rating: 5 };
+  saveToLocalStorage(data1);
+  saveToLocalStorage(data2);
+  loadLoggedHours();
+
+  // Check initial total hours
+  let totalHoursText = document.getElementById("total-hours").textContent;
+  expect(totalHoursText).toBe("Total Hours Volunteered: 8");
+
+  // Simulate delete button click for the first entry
+  const deleteButton = document.querySelector('.delete-button');
+  deleteButton.click();
+
+  // Check updated total hours after deletion
+  totalHoursText = document.getElementById("total-hours").textContent;
+  expect(totalHoursText).toBe("Total Hours Volunteered: 3");
 });
