@@ -46,11 +46,11 @@ button {
     background-color: rgb(100, 100, 199)
 }
 
-#delete-button{
+.delete-button{
     background-color: #ff0000;
 }
 
-#delete-button:hover{
+.delete-button:hover{
     background-color: #e50000;
 }
 

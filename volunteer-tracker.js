@@ -56,18 +56,34 @@ function saveToLocalStorage(data) {
 function loadLoggedHours() {
     const loggedHours = JSON.parse(localStorage.getItem('loggedHours')) || [];
     const tableBody = document.querySelector("#logged-hours-table tbody");
-    tableBody.innerHTML = ""; // Clear existing rows
+    tableBody.innerHTML = ""; 
 
-    loggedHours.forEach(entry => {
+    let totalHours = 0;
+
+    loggedHours.forEach((entry, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${entry.name}</td>
             <td>${entry.hours}</td>
             <td>${entry.date}</td>
             <td>${entry.rating}</td>
+            <td><button class="delete-button" data-index="${index}">Delete</button></td>
         `;
         tableBody.appendChild(row);
+        totalHours += entry.hours; 
     });
+
+    // Update total hours in summary section
+    document.getElementById("total-hours").textContent = `Total Hours Volunteered: ${totalHours}`;
+
+    const deleteButtons = document.querySelectorAll(".delete-button");
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", (event) => {
+            const index = event.target.getAttribute("data-index");
+            deleteLoggedHours(index);
+        });
+    });
+
 }
 
 
@@ -248,4 +264,15 @@ function escapeHTML(input) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+/**
+ * delete logged hours entry
+ * @param {number} index - The index of the entry to be deleted
+ */
+function deleteLoggedHours(index) {
+    const loggedHours = JSON.parse(localStorage.getItem('loggedHours')) || [];
+    loggedHours.splice(index, 1); 
+    localStorage.setItem('loggedHours', JSON.stringify(loggedHours)); 
+    loadLoggedHours(); 
 }
