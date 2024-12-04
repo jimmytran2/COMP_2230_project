@@ -17,6 +17,8 @@ localStorage and jest testing
 https://medium.com/@criszamcham/test-cases-with-jest-local-storage-and-dom-mock-f9144ae9c63c
 jest globals
 https://jestjs.io/docs/api
+json
+https://www.w3schools.com/js/js_json_parse.asp
 
 
 ## Bhea
