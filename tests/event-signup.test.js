@@ -279,7 +279,7 @@ describe("test localStorage", () => {
         displayData();
 
         expected = global.document.querySelector("#signup-table-body").innerHTML;
-        actualHTML = ('<tr><td>FunRun2024</td><td>Matt Damon</td><td>matt@gmail.com</td><td>Sponsor</td><td style=\"text-align: center;\"><button class=\"delete-button\">X</button></td></tr>');
+        actualHTML = ('<tr><td>FunRun2024</td><td>Matt Damon</td><td>matt@gmail.com</td><td>Sponsor</td><td><button class=\"delete-button\">X</button></td></tr>');
 
         expect(expected).toBe(actualHTML);
     });
