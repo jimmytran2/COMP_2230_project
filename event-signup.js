@@ -173,6 +173,7 @@ function displayData(){
             // adds delete button to each entry
             const deleteButton = addDeleteButton(i, entries);
             deleteCell.appendChild(deleteButton);
+            deleteCell.style.textAlign = 'center';
         }
     }
 }
