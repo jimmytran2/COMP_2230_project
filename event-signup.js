@@ -74,13 +74,15 @@ function validateForm(){
     if(isValidEventName && isValidRepName && isValidRepEmail && isValidRole){
         data = formDataObject(eventNameInputNode.value, representativeNameInputNode.value, representativeEmailInputNode.value, roleSelectionNode.value);
         displayData();
+        
+        // clear the inputs after submitting
+        eventNameInputNode.value = "";
+        representativeNameInputNode.value = "";
+        representativeEmailInputNode.value = "";
+        roleSelectionNode.value = "";
     }
 
-    // clear the inputs after submitting
-    eventNameInputNode.value = "";
-    representativeNameInputNode.value = "";
-    representativeEmailInputNode.value = "";
-    roleSelectionNode.value = "";
+
 
     return data;
 }
