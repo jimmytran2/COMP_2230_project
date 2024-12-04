@@ -7,7 +7,10 @@ if (typeof window === "undefined") {
         validateHoursVolunteered,
         validateDate,
         validateExperienceRating,
-        validateFormSubmit 
+        validateFormSubmit,
+        loadLoggedHours,
+        saveToLocalStorage,
+        deleteLoggedHours
     };
 } else {
     // run init function when window loads
@@ -21,6 +24,7 @@ if (typeof window === "undefined") {
 function init() {
     const formNode = document.querySelector("#volunteer-tracker");
     attachEventListener(formNode, validateFormSubmit);
+    loadLoggedHours();
 }
 
 
@@ -36,6 +40,75 @@ function attachEventListener(node, callback) {
     });
 }
 
+/**
+ * Save data to local storage
+ * @param {Object} data - Data object to be saved
+ */
+function saveToLocalStorage(data) {
+    let loggedHours = JSON.parse(localStorage.getItem('loggedHours')) || [];
+    loggedHours.push(data);
+    localStorage.setItem('loggedHours', JSON.stringify(loggedHours));
+}
+
+/**
+ * Load logged hours from local storage and display them in the table
+ */
+function loadLoggedHours() {
+    const loggedHours = JSON.parse(localStorage.getItem('loggedHours')) || [];
+    const tableBody = document.querySelector("#logged-hours-table tbody");
+    tableBody.innerHTML = ""; 
+
+    let totalHours = 0;
+
+    loggedHours.forEach((entry, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${entry.name}</td>
+            <td>${entry.hours}</td>
+            <td>${entry.date}</td>
+            <td>${entry.rating}</td>
+            <td><button class="delete-button" data-index="${index}">Delete</button></td>
+        `;
+        tableBody.appendChild(row);
+        totalHours += entry.hours; 
+    });
+
+    // Update total hours in summary section
+    const totalHoursElement = document.getElementById("total-hours");
+    if (totalHoursElement) {
+        totalHoursElement.textContent = `Total Hours Volunteered: ${totalHours}`;
+    }
+
+    const deleteButtons = document.querySelectorAll(".delete-button");
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", (event) => {
+            const index = event.target.getAttribute("data-index");
+            deleteLoggedHours(index);
+        });
+    });
+}
+
+
+/**
+ * Clears the form inputs after submission
+ */
+function clearForm() {
+    document.querySelector("#charity-name").value = "";
+    document.querySelector("#hours-volunteered").value = "";
+    document.querySelector("#date").value = "";
+    document.querySelector("#experience-rating").selectedIndex = 0; // Reset to default
+}
+
+
+/**
+ * Clears all error messages that have .error-message class
+ */
+function clearErrors() {
+    const errorMessages = document.querySelectorAll(".error-message");
+    for (const errors of errorMessages) {
+        errors.remove();
+    }
+}
 
 /**
  * Validate form inputs and creates temporary data object if all tests pass
@@ -60,7 +133,7 @@ function validateFormSubmit() {
     const isDateValid = validateDate(dateInput, dateNode);
 
     const experienceRatingNode = document.querySelector("#experience-rating");
-    const experienceRatingInput = escapeHTML(document.querySelector("#experience-rating").value);
+    const experienceRatingInput = experienceRatingNode.value;
     const isExperienceRatingValid = validateExperienceRating(experienceRatingInput, experienceRatingNode);
 
     // Check if all validations passed
@@ -69,6 +142,9 @@ function validateFormSubmit() {
     // If all validations passed
     if (isValid) {
        data = createDataObject(charityNameInput, Number(hoursVolunteeredInput), dateInput, Number(experienceRatingInput));
+        saveToLocalStorage(data);
+        clearForm();
+        loadLoggedHours();
     }
 
     // return data object
@@ -148,15 +224,14 @@ function validateDate(date, node) {
  * @returns - false if there was an error, otherwise returns true
  */
 function validateExperienceRating(experienceRating, node) {
-    if (experienceRating.length <= 0) {
-        showError(node, "Please select an experience rating.");
+    if (!experienceRating || experienceRating === "") {
+        showError(node.parentElement, "Please select an experience rating.");
         return false;
     }
 
-    // Check if experience rating is a number and within the valid range (1-5)
     const ratingValue = Number(experienceRating);
     if (isNaN(ratingValue) || ratingValue < 1 || ratingValue > 5) {
-        showError(node, "Experience rating must be between 1 and 5.");
+        showError(node.parentElement, "Experience rating must be between 1 and 5.");
         return false;
     }
 
@@ -176,18 +251,6 @@ function showError(inputElement, message) {
     inputElement.appendChild(errorMessage);
 }
 
-
-/**
- * Clears all error messages that have .error-message class
- */
-function clearErrors() {
-    const errorMessages = document.querySelectorAll(".error-message");
-    for (const errors of errorMessages) {
-        errors.remove();
-    }
-}
-
-
 /**
  * Converts special characters to their corresponding HTML entities.
  * @param {str} input - Input to be converted
@@ -200,4 +263,15 @@ function escapeHTML(input) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+/**
+ * delete logged hours entry
+ * @param {number} index - The index of the entry to be deleted
+ */
+function deleteLoggedHours(index) {
+    const loggedHours = JSON.parse(localStorage.getItem('loggedHours')) || [];
+    loggedHours.splice(index, 1); 
+    localStorage.setItem('loggedHours', JSON.stringify(loggedHours)); 
+    loadLoggedHours(); 
 }
