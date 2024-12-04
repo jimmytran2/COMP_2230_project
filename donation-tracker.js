@@ -5,7 +5,10 @@ if(typeof window === "undefined") {
         validateCharityName,
         validateDonation,
         validateDate,
-        validateFormSubmit};
+        validateFormSubmit,
+        saveData,
+        displayData,
+        updateSummary};
 } else {
     // run init fuction when window loads
     window.onload = init;
@@ -17,6 +20,9 @@ if(typeof window === "undefined") {
 function init(){
     const formNode = document.querySelector("#donation-tracker");
     attachEventListener(formNode, validateFormSubmit);
+    // Load data
+    displayData();
+    updateSummary();
 }
 
 /**
@@ -53,9 +59,7 @@ function validateFormSubmit(){
     const donationDateInput = escapeHTML(document.querySelector("#donation-date").value);
     const isDateValid = validateDate(donationDateInput, donationDateNode);
 
-    // const donorCommentNode = document.querySelector("#donor-comment-section");
     const donorCommentInput = escapeHTML(document.querySelector("#donor-comment").value);
-    // const isCommentsValid = validateComments(donorCommentInput, donorCommentNode);
 
     // Check if all validations passsed, doesn't check for comments
     const isValid = isCharityNameValid && isDonationValid && isDateValid;
@@ -63,6 +67,9 @@ function validateFormSubmit(){
     // If all validations passed
     if(isValid){
         data = createDataObject(charityNameInput, donationAmountInput, donationDateInput, donorCommentInput);
+        saveData(data);
+        displayData();
+        updateSummary();
     }
 
     return data;
@@ -85,7 +92,6 @@ function createDataObject(charityName, donationAmt, donationDate, donorComment){
         comment: donorComment
     }
     
-    console.log(data);
     return data;
 }
 
@@ -107,7 +113,7 @@ function validateCharityName(charityName, node){
 }
 
 /**
- * Validate donation input, creates errors if input is blank, less than 1.00, or non-numeric
+ * Validate donation input, creates errors if input is blank, non-numeric, or less than 1.00
  * @param {str} donationAmount - Value of donation amount input
  * @param {HTMLElement} node - Container of donation input
  * @returns - false if there was an error, otherwise returns true
@@ -121,14 +127,14 @@ function validateDonation(donationAmount, node){
         showError(node, "Donation cannot be blank.");
         return false;
     }
-    // Check if donation is less than $1.00
-    if(parseFloat(donationAmount) < 1.00){
-        showError(node, "Donation must be at least $1.00");
-        return false;
-    }
     // Check if donation is numeric
     if(!numericPattern.test(donationAmount)){
         showError(node, "Donation amount must be numeric.");
+        return false;
+    }
+    // Check if donation is less than $1.00
+    if(parseFloat(donationAmount) < 1.00){
+        showError(node, "Donation must be at least $1.00");
         return false;
     }
     
@@ -151,16 +157,6 @@ function validateDate(donationDate, node){
         return true;
     }
 }
-
-// function validateComments(donorComment, node){
-    
-//     if(donorComment.length <= 0){
-//         showError(node, "Please enter a comment.");
-//         return false;
-//     } else{
-//         return true;
-//     }
-// }
 
 /**
  * Creates an error message for inputElement and appends under the input
@@ -204,4 +200,103 @@ function escapeHTML(input) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+/**
+ * Store's the donation object in localStorage
+ * @param {object} data - Data object of donation being saved
+ */
+function saveData(data){
+    // retrieve all donations from localStorage
+    let userDonations = JSON.parse(localStorage.getItem("allDonations"));
+    // if there are no "allDonations" initialize as empty array
+    if(!userDonations){
+        userDonations = [];
+    }
+
+    // append data to userDonations
+    userDonations.push(data);
+
+    // save to localStorage
+    localStorage.setItem("allDonations", JSON.stringify(userDonations));
+}
+
+/**
+ * Reads donations from localStorage and updates the table to display them
+ */
+function displayData(){
+    // Select table body
+    const donationsTable = document.querySelector("#donations-table").getElementsByTagName("tbody")[0];
+
+    // Clear table
+    donationsTable.textContent = "";
+
+    // Retrieve donations from localStorage as array
+    let retrievedDonations = JSON.parse(localStorage.getItem("allDonations"));
+
+    // If there are any donations, loop through retrieved donations and add to table
+    if (retrievedDonations){
+        for (let i = 0; i < retrievedDonations.length; i++){
+            // Create empty row at the end of the table
+            const tableRow  = donationsTable.insertRow(-1);
+
+            // Create cells
+            const nameCell = tableRow.insertCell(0);
+            const donationCell = tableRow.insertCell(1);
+            const dateCell = tableRow.insertCell(2);
+            const commentCell = tableRow.insertCell(3);
+            const deleteCell = tableRow.insertCell(4);
+
+            // Create delete button
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "X";
+            deleteButton.className = "delete-button";
+            deleteButton.addEventListener("click", () =>{
+                // If button is clicked, remove the buttons table row
+                deleteButton.parentElement.parentElement.remove();
+
+                // Remove from retrievedDonations
+                // Source cited in WORKS_CONSULTED.md
+                retrievedDonations.splice(i, 1)
+                // save to localStorage
+                localStorage.setItem("allDonations", JSON.stringify(retrievedDonations));
+                updateSummary();
+            });
+
+            // Add data to cells
+            nameCell.textContent = retrievedDonations[i].name;
+            donationCell.textContent = `$${retrievedDonations[i].donation}`;
+            dateCell.textContent = retrievedDonations[i].date;
+            commentCell.textContent = retrievedDonations[i].comment;
+            deleteCell.appendChild(deleteButton);
+            deleteCell.style.textAlign = "center";
+
+
+        }
+    }
+}
+
+/**
+ * Reads the donations saved in localStorage and updates the summary section of the webpage with the total
+ */
+function updateSummary(){
+    // Select summary and clear
+    const summaryNode = document.querySelector("#summary");
+    summaryNode.textContent = "";
+    // Retrieve donations from localStorage as array
+    let retrievedDonations = JSON.parse(localStorage.getItem("allDonations"));
+    let donations = 0;
+
+    // If there are any donations
+    if (retrievedDonations){
+        // Loop through and add all donation amounts
+        for (let i = 0; i < retrievedDonations.length; i++){
+            donations += parseFloat(retrievedDonations[i].donation);
+        }
+    }
+
+    let result = `Total Donation Amount: $${donations.toFixed(2)}`;
+    const summary = document.createElement("h2");
+    summary.textContent = result;
+    summaryNode.appendChild(summary);
 }
