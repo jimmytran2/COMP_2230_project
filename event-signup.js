@@ -172,7 +172,7 @@ function displayData(){
             // adds delete button to each entry
             const deleteButton = addDeleteButton(i, entries);
             deleteCell.appendChild(deleteButton);
-            deleteButton.style.textAlign = "center";
+            deleteCell.style.textAlign = "center";
         }
     }
 }
