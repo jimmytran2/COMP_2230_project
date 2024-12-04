@@ -8,7 +8,8 @@ if (typeof window === "undefined") {
         validateDate,
         validateExperienceRating,
         validateFormSubmit,
-        loadLoggedHours
+        loadLoggedHours,
+        saveToLocalStorage
     };
 } else {
     // run init function when window loads
@@ -233,16 +234,6 @@ function showError(inputElement, message) {
     inputElement.appendChild(errorMessage);
 }
 
-
-/**
- * Clears all error messages that have .error-message class
- */
-function clearErrors() {
-    const errorMessages = document.querySelectorAll(".error-message");
-    for (const errors of errorMessages) {
-        errors.remove();
-    }
-}
 
 
 /**

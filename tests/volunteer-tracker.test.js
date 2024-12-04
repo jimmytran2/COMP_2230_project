@@ -1,57 +1,99 @@
-const { attachEventListener, createDataObject, validateCharityName, validateHoursVolunteered, validateDate, validateExperienceRating, validateFormSubmit } = require("../volunteer-tracker.js");
+const { 
+  attachEventListener, 
+  createDataObject, 
+  validateCharityName, 
+  validateHoursVolunteered, 
+  validateDate, 
+  validateExperienceRating, 
+  validateFormSubmit,
+  saveToLocalStorage,
+  loadLoggedHours
+} = require("../volunteer-tracker.js");
+
 const { JSDOM } = require("jsdom");
+const { LocalStorage } = require('node-localstorage');
+global.localStorage = new LocalStorage("./scratch");
+
+
+// Clear localStorage before each test
+beforeEach(() => {
+  localStorage.clear();
+});
 
 test("validateFormSubmit correctly collects form data", () => {
-    // Setup DOM
-    const dom = new JSDOM(`
-      <!DOCTYPE html>
-      <form id="volunteer-tracker">
-        <!-- CHARITY NAME -->
-        <section id="charity-name-section">
-          <label for="charity-name">Charity Name:</label>
-          <input type="text" id="charity-name" name="charity-name" value="test charity">
-        </section>
-  
-        <!-- HOURS VOLUNTEERED -->
-        <section id="hours-volunteered-section">
-          <label for="hours-volunteered">Hours Volunteered:</label>
-          <input type="number" name="hours-volunteered" id="hours-volunteered" value="2">
-        </section>
-  
-        <!-- DATE -->
-        <section id="date-section">
-          <label for="date">Date:</label>
-          <input type="date" id="date" name="date" value="2020-12-30">
-        </section>
-  
-        <!-- VOLUNTEER EXPERIENCE RATING -->
-        <section>
-          <label for="experience-rating">Volunteer Experience Rating:</label>
-          <select id="experience-rating" name="experience-rating">
-            <option value="3">3 Stars</option>
-          </select>
-        </section>
-  
-        <!-- SUBMIT BUTTON -->
-        <div>
-          <button type="submit" id="submit-button">Submit</button>
-        </div>
-      </form>
-    `);
-  
-    global.document = dom.window.document;
-  
-    let result = validateFormSubmit();
-    let expected = ({
+  // Setup DOM
+  const dom = new JSDOM(`
+    <!DOCTYPE html>
+    <form id="volunteer-tracker">
+      <section id="charity-name-section">
+        <label for="charity-name">Charity Name:</label>
+        <input type="text" name="charity-name" id="charity-name" value="test charity">
+      </section>
+      <section id="hours-volunteered-section">
+        <label for="hours-volunteered">Hours Volunteered:</label>
+        <input type="number" name="hours-volunteered" id="hours-volunteered" value="2">
+      </section>
+      <section id="date-section">
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date" value="2020-12-30">
+      </section>
+      <section>
+        <label for="experience-rating">Volunteer Experience Rating:</label>
+        <select id="experience-rating" name="experience-rating">
+          <option value="" disabled>Select a rating</option>
+          <option value="1">1 Star</option>
+          <option value="2">2 Stars</option>
+          <option value="3" selected>3 Stars</option>
+          <option value="4">4 Stars</option>
+          <option value="5">5 Stars</option>
+        </select>
+      </section>
+      <button type="submit" id="submit-button">Submit</button>
+    </form>
+    <section id="logged-hours-section">
+      <table id="logged-hours-table">
+        <thead>
+          <tr>
+            <th>Charity Name</th>
+            <th>Hours Volunteered</th>
+            <th>Date</th>
+            <th>Experience Rating</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  `);
+
+  global.document = dom.window.document;
+
+  // Mock localStorage
+  const localStorageMock = {
+      store: {},
+      getItem: function(key) { return this.store[key] || null; },
+      setItem: function(key, value) { this.store[key] = value.toString(); },
+      clear: function() { this.store = {}; }
+  };
+  global.localStorage = localStorageMock;
+
+  // Call the function to validate form
+  const result = validateFormSubmit();
+
+  // Expected output
+  const expected = {
       name: "test charity",
       hours: 2,
       date: "2020-12-30",
       rating: 3
+  };
 
-    });
-  
-    expect(result).toStrictEqual(expected);
-  });
+  expect(result).toStrictEqual(expected);
+
+  // Check if data was saved to localStorage
+  const savedData = JSON.parse(localStorageMock.getItem("loggedHours"));
+  expect(savedData).toContainEqual(expected);
+});
+
 
 test("callback is triggered on form submission", () => {
     // fake function; only returns true
@@ -202,4 +244,80 @@ test("validateExperienceRating returns true when input is valid", () => {
     let result = validateExperienceRating(rating, ratingNode);
 
     expect(result).toBe(true);
+});
+
+test("saveToLocalStorage correctly stores data", () => {
+  const data = {
+      name: "charity",
+      hours: 5,
+      date: "2023-10-10",
+      rating: 4
+  };
+  
+  saveToLocalStorage(data);
+
+  // Retrieve loggedHours as array
+  const loggedHours = JSON.parse(localStorage.getItem("loggedHours"));
+  
+  // Check if the stored data matches the expected data
+  expect(loggedHours[0]).toEqual(data);
+  expect(loggedHours).toHaveLength(1);
+});
+
+test("loadLoggedHours correctly retrieves data from localStorage and displays it in the table", () => {
+  const dom = new JSDOM(`
+      <!DOCTYPE html>
+      <section id="logged-hours-section">
+            <h2>Logged Hours</h2>
+            <table id="logged-hours-table">
+                <thead>
+                    <tr>
+                        <th>Charity Name</th>
+                        <th>Hours Volunteered</th>
+                        <th>Date</th>
+                        <th>Experience Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be injected with JavaScript here-->
+                </tbody>
+            </table>
+        </section>
+  `);
+  global.document = dom.window.document;
+
+  const data1 = {
+      name: "charity 1",
+      hours: 5,
+      date: "2023-10-10",
+      rating: 4
+  };
+  const data2 = {
+      name: "charity 2",
+      hours: 3,
+      date: "2023-10-11",
+      rating: 5
+  };
+  saveToLocalStorage(data1);
+  saveToLocalStorage(data2);
+  
+  loadLoggedHours();
+
+  // select table body
+  const loggedHoursTable = document.querySelector("#logged-hours-table").getElementsByTagName("tbody")[0];
+
+  // Check the amount of rows
+  expect(loggedHoursTable.rows.length).toEqual(2);
+
+  // Check the content of the first row
+  expect(loggedHoursTable.rows[0].cells[0].textContent).toEqual(data1.name);
+  expect(loggedHoursTable.rows[0].cells[1].textContent).toEqual(data1.hours.toString());
+  expect(loggedHoursTable.rows[0].cells[2].textContent).toEqual(data1.date);
+  expect(loggedHoursTable.rows[0].cells[3].textContent).toEqual(data1.rating.toString());
+
+  // Check the content of the second row
+  expect(loggedHoursTable.rows[1].cells[0].textContent).toEqual(data2.name);
+  expect(loggedHoursTable.rows[1].cells[1].textContent).toEqual(data2.hours.toString());
+  expect(loggedHoursTable.rows[1].cells[2].textContent).toEqual(data2.date);
+  expect(loggedHoursTable.rows[1].cells[3].textContent).toEqual(data2.rating.toString());
 });
