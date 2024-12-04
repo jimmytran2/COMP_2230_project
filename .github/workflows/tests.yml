@@ -29,6 +29,9 @@ jobs:
           - name: Create Scratch Directory 
             run: mkdir /home/runner/work/Community-Support-Tracker/Community-Support-Tracker/scratch/
 
+          - name: Create Scratch storedData file 
+            run: touch /home/runner/work/Community-Support-Tracker/Community-Support-Tracker/scratch/storedData
+
           - name: Run Jest Tests
             run: npm test
 
