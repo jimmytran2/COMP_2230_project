@@ -92,3 +92,7 @@ inputs, select, fieldsets{
     margin-top: 5px;
     margin-bottom: 10px; 
 }
+
+h2 {
+    text-align: center;
+}
